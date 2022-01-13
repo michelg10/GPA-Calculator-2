@@ -57,6 +57,7 @@ struct PresetSetupView: View {
             }.navigationBarHidden(true)
             .navigationViewStyle(.stack)
         }.navigationBarHidden(true)
+        .navigationViewStyle(.stack)
     }
 }
 

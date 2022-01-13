@@ -74,6 +74,7 @@
 		D05CDDB9278FDF8C00F019F7 /* GPA Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "GPA Calculator.entitlements"; sourceTree = "<group>"; };
 		D05CDDBC279066C900F019F7 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		D05CDDC027906D2F00F019F7 /* PresetSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetSetupView.swift; sourceTree = "<group>"; };
+		D05CDDC2279088CC00F019F7 /* GPA-Calculator-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GPA-Calculator-Info.plist"; sourceTree = SOURCE_ROOT; };
 		D07518CA27816FAF004F95A8 /* AppSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSingleton.swift; sourceTree = "<group>"; };
 		D07518CC27817380004F95A8 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		D07518CE2781741C004F95A8 /* Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presets.swift; sourceTree = "<group>"; };
@@ -161,6 +162,7 @@
 		D0F3CDE2277D9B7E00CB6875 /* GPA Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				D05CDDC2279088CC00F019F7 /* GPA-Calculator-Info.plist */,
 				D05CDDB9278FDF8C00F019F7 /* GPA Calculator.entitlements */,
 				D0F3CDE3277D9B7E00CB6875 /* GPA_CalculatorApp.swift */,
 				D0F3CDE5277D9B7E00CB6875 /* ContentView.swift */,
@@ -771,9 +773,9 @@
 				DEVELOPMENT_TEAM = 9K2XM38XLK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "GPA-Calculator-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "GPA Calc";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -805,9 +807,9 @@
 				DEVELOPMENT_TEAM = 9K2XM38XLK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "GPA-Calculator-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "GPA Calc";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

@@ -129,6 +129,7 @@ struct ContentView: View {
                     }
                     viewInit=true
                 }
+                .background(Color.init("AntiPrimary"))
         }
         .navigationViewStyle(.stack)
         .onPreferenceChange(SubjectTitleSizeKey.self) {

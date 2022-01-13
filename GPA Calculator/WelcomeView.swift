@@ -53,8 +53,9 @@ struct WelcomeView: View {
                 }.padding(.bottom, 72)
                 .buttonStyle(nilButtonStyle())
             }.navigationBarHidden(true)
-            .navigationViewStyle(.stack)
-        }
+            .frame(maxWidth: .greatestFiniteMagnitude)
+            .background(Color.init("AntiPrimary"))
+        }.navigationViewStyle(.stack)
     }
 }
 
