@@ -20,81 +20,125 @@ struct CircularButton: View {
     }
 }
 
-struct SubjectCell: View {
-    var subject: Subject
-    @Binding var levelIndex: Int
-    @Binding var scoreIndex: Int
-    var nameMode: NameMode
-    var body: some View {
-        VStack(spacing: 19) {
-            HStack(spacing:0) {
-                Text(subject.name)
-                    .frame(width: 124, alignment: .leading)
-                    .font(.system(size: 22, weight: .regular, design: .default))
-                Picker(selection: $levelIndex) {
-                    ForEach((0...subject.levels.count-1), id:\.self) { index in
-                        Text(subject.levels[index].name).tag(index)
-                    }
-                } label: {
-                    EmptyView()
-                }.pickerStyle(SegmentedPickerStyle())
-            }
-            Picker(selection: $scoreIndex) {
-                ForEach((0...subject.scoreToBaseGPAMap.count-1), id:\.self) { index in
-                    let currentScoreToBaseGPAMapItem = subject.scoreToBaseGPAMap[index]
-                    Text(nameMode == .percentage ? currentScoreToBaseGPAMapItem.percentageName : currentScoreToBaseGPAMapItem.letterName).tag(index)
-                }
-            } label: {
-                EmptyView()
-            }.pickerStyle(SegmentedPickerStyle())
-        }.frame(height: 114)
-        .padding(.horizontal,11)
+private extension ContentView {
+    struct SubjectTitleSizeKey: PreferenceKey {
+        static let defaultValue: CGFloat = 0
+        
+        static func reduce(value: inout CGFloat,
+                           nextValue: () -> CGFloat) {
+            value = max(value, nextValue())
+        }
     }
 }
 
 struct ContentView: View {
     @ObservedObject var appSingleton: AppSingleton
+    @State var navAction:Int? = 0
+    @State private var subjectTitleWidth: CGFloat?
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @State var viewInit = false
+    
     var body: some View {
-        VStack(alignment: .center, spacing:0) {
-            Text("GPA Calculator")
-                .font(.system(size: 28, weight: .semibold, design: .default))
-                .padding(.top, 25)
-            Text("Your GPA: \(appSingleton.currentGPA)")
-                .padding(.bottom, 15)
-            ScrollView {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 14)
-                        .foregroundColor(.init("Background"))
-                    VStack(spacing: 0) {
-                        HStack(alignment: .center, spacing: 26) {
-                            Button {
+        NavigationView {
+            VStack(alignment: .center, spacing:0) {
+                Text("GPA Calculator")
+                    .font(.system(size: 28, weight: .semibold, design: .default))
+                    .padding(.top, 25)
+                Text("Your GPA: \(appSingleton.currentGPA)")
+                    .padding(.bottom, 15)
+                ScrollView {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 14)
+                            .foregroundColor(.init("Background"))
+                        VStack(spacing: 0) {
+                            NavigationLink(
+                                destination: CustomizeView(nameMode: $appSingleton.nameMode, appSingleton: appSingleton),tag: 1,selection: $navAction,
+                                label: {
+                                    EmptyView()
+                                })
+                            HStack(alignment: .center, spacing: 26) {
+                                Button {
+                                    navAction=1
+                                    vibrate(.medium)
+                                } label: {
+                                    CircularButton(text: "Customize")
+                                }.buttonStyle(nilButtonStyle())
+                                Button {
+                                    appSingleton.resetUserCourseInput()
+                                    vibrate(.medium)
+                                } label: {
+                                    CircularButton(text: "Reset")
+                                }.buttonStyle(nilButtonStyle())
+                            }.frame(height: 70)
+                            let subjects = appSingleton.currentPreset.getSubjects()
+                            
+                            ForEach((0..<subjects.count), id:\.self) { index in
+                                let typedIndex: Int = index
+                                Rectangle()
+                                    .frame(height: 1)
+                                    .foregroundColor(.init("Separator"))
+                                    .padding(.leading, index == 0 ? 0 : 25)
                                 
-                            } label: {
-                                CircularButton(text: "Customize")
-                            }.buttonStyle(nilButtonStyle())
-                            Button {
+                                let subject=subjects[index]
+                                let userNameChoiceIndex=appSingleton.userNameChoiceIndex[index]
                                 
-                            } label: {
-                                CircularButton(text: "Reset")
-                            }.buttonStyle(nilButtonStyle())
-                        }.frame(height: 70)
-                        let subjects = appSingleton.currentPreset.getSubjects()
-                        ForEach((0...subjects.count-1), id:\.self) { index in
-                            Rectangle()
-                                .frame(height: 1)
-                                .foregroundColor(.init("Separator"))
-                            SubjectCell(subject: subjects[index], levelIndex: $appSingleton.userInput[index].levelIndex, scoreIndex: $appSingleton.userInput[index].scoreIndex, nameMode: appSingleton.nameMode)
+                                VStack(spacing: 19) {
+                                    HStack(spacing:0) {
+                                        let name=userNameChoiceIndex == -1 ? subject.name : subject.alternateNames![userNameChoiceIndex]
+                                        Text((horizontalSizeClass == .regular ? name.regular : name.compact))
+                                            .fixedSize()
+                                            .font(.system(size: 22, weight: .regular, design: .default))
+                                            .background(GeometryReader {geometry in
+                                                Color.clear.preference(key: SubjectTitleSizeKey.self, value: geometry.size.width)
+                                            }).frame(width: subjectTitleWidth, alignment: .leading)
+                                        Spacer()
+                                        SegmentedControlView(items: subject.getLevelNames(), selectedIndex: .init(get: {
+                                            appSingleton.userInput[typedIndex].levelIndex
+                                        }, set: { val in
+                                            vibrate(.light)
+                                            appSingleton.userInput[typedIndex].levelIndex=val
+                                        })).frame(maxWidth: (appSingleton.currentPreset.useSmallLevelDisplay ? 170 : (horizontalSizeClass == .regular ? 470 : 265)))
+                                        
+                                    }
+                                    Picker(selection: .init(get: {
+                                        appSingleton.userInput[typedIndex].scoreIndex
+                                    }, set: { x in
+                                        vibrate(.light)
+                                        appSingleton.userInput[typedIndex].scoreIndex=x
+                                    })) {
+                                        ForEach((0..<subject.scoreToBaseGPAMap.count), id:\.self) { index2 in
+                                            let currentScoreToBaseGPAMapItem = subject.scoreToBaseGPAMap[index2]
+                                            Text(appSingleton.nameMode == .percentage ? currentScoreToBaseGPAMapItem.percentageName : currentScoreToBaseGPAMapItem.letterName).tag(index2)
+                                        }
+                                    } label: {
+                                        EmptyView()
+                                    }.pickerStyle(SegmentedPickerStyle())
+                                }.frame(height: 114)
+                                    .padding(.horizontal,11)
+                            }.id(appSingleton.currentPreset.id)
                         }
                     }
+                }.cornerRadius(14)
+            }.padding(.horizontal, 7)
+                .padding(.bottom, 20)
+                .navigationBarHidden(true)
+                .onAppear {
+                    if viewInit {
+                        appSingleton.applySelection()
+                        vibrate(.medium)
+                    }
+                    viewInit=true
                 }
-            }.cornerRadius(14)
-        }.padding(.horizontal, 16)
-        .padding(.bottom, 20)
+        }
+        .navigationViewStyle(.stack)
+        .onPreferenceChange(SubjectTitleSizeKey.self) {
+            subjectTitleWidth = $0
+        }.navigationBarHidden(true)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(appSingleton: .init())
+        ContentView(appSingleton: .init(loadSave: true))
     }
 }

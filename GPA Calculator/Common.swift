@@ -13,6 +13,10 @@ struct nilButtonStyle: ButtonStyle {
         configuration.label
     }
 }
-func isEqual(_ a: Float, _ b: Float) -> Bool {
+func isEqual(_ a: Double, _ b: Double) -> Bool {
     return abs(a-b)<0.000001
+}
+func vibrate(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
+    let generator = UIImpactFeedbackGenerator(style: style)
+    generator.impactOccurred()
 }
