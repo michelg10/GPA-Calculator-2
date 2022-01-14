@@ -139,7 +139,7 @@ struct Subject: SubjectComputeGroup {
     }
     
     static func fastIbOther(name: String) -> Subject {
-        return .init(name: .init(name), alternateNames: nil, levels: [.init(name: "IB", weight: 1.0, offset: 0)], scoreToBaseGPAMap: ibOtherScoreToBaseGPAMap)
+        return .init(name: .init(name), alternateNames: nil, levels: [.init(name: "IB", weight: 0.5, offset: 0)], scoreToBaseGPAMap: ibOtherScoreToBaseGPAMap)
     }
     static func fastIb(name: String, alternateNames: [SizeDependentString]?=nil) -> Subject {
         return fastIb(name: SizeDependentString.init(name), alternateNames: alternateNames)
