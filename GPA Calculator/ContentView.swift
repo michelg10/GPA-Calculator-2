@@ -97,6 +97,7 @@ struct ContentView: View {
                                         }, set: { val in
                                             vibrate(.light)
                                             appSingleton.userInput[typedIndex].levelIndex=val
+                                            appSingleton.computeGPA()
                                         })).frame(maxWidth: (appSingleton.currentPreset.useSmallLevelDisplay ? 170 : (horizontalSizeClass == .regular ? 470 : 265)))
                                         
                                     }
@@ -105,6 +106,7 @@ struct ContentView: View {
                                     }, set: { x in
                                         vibrate(.light)
                                         appSingleton.userInput[typedIndex].scoreIndex=x
+                                        appSingleton.computeGPA()
                                     })) {
                                         ForEach((0..<subject.scoreToBaseGPAMap.count), id:\.self) { index2 in
                                             let currentScoreToBaseGPAMapItem = subject.scoreToBaseGPAMap[index2]

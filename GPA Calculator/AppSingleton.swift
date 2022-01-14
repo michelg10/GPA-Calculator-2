@@ -27,15 +27,10 @@ class AppSingleton:ObservableObject {
     var draftUserNameChoiceIndex: [Int]=[]
     var presetOptions: [PresetOption]=[]
     var presetOptionsCount: Int=0
-    var allowGPACompute=false;
     var allowDateSave=false
     let defaults=UserDefaults.standard
     
-    var userInput: [UserCourseInput] {
-        didSet {
-            computeGPA()
-        }
-    }// important: this can be bigger than it should be. simply ignore the extra elements
+    var userInput: [UserCourseInput] // important: this can be bigger than it should be. simply ignore the extra elements
     var nameMode = NameMode.percentage
     
     func saveData() {
@@ -84,7 +79,6 @@ class AppSingleton:ObservableObject {
         saveData()
     }
     func initializeFromPresetIndex() {
-        allowGPACompute=false
         currentPreset = allPresets[appliedPresetIndex]
         currentSelectedPresetIndex=appliedPresetIndex
         
@@ -131,13 +125,11 @@ class AppSingleton:ObservableObject {
         }
         
         prepareDraftForIndex()
-        allowGPACompute=true
         computeGPA()
     }
     init(loadSave: Bool) {
         allowDateSave = loadSave
         allPresets = getPresets()
-        allowGPACompute=false
         userInput = []
         
         appliedPresetIndex=4 // random applied preset index for previews
@@ -151,13 +143,9 @@ class AppSingleton:ObservableObject {
             reloadFromSave()
         } else {
             initializeFromPresetIndex()
-        }
-        allowGPACompute=true
+        }        
     }
     func computeGPA() {
-        if (!allowGPACompute) {
-            return
-        }
         saveData()
         var finalGPA=0.0
         var finalGPATotalWeight=0.0
@@ -177,12 +165,10 @@ class AppSingleton:ObservableObject {
         currentGPA=finalGPAString[finalGPAString.startIndex..<finalGPAString.index(finalGPAString.endIndex, offsetBy: -3)]+"."+finalGPAString[finalGPAString.index(finalGPAString.endIndex, offsetBy: -3)..<finalGPAString.endIndex]
     }
     func resetUserCourseInput() {
-        allowGPACompute=false
         for i in 0..<userInput.count {
             userInput[i] = .init(levelIndex: 0, scoreIndex: 0)
         }
         userInput.append(contentsOf: Array(repeating: .init(levelIndex: 0, scoreIndex: 0), count: max(currentPreset.getSubjects().count-userInput.count,0)))
-        allowGPACompute=true
         computeGPA()
         objectWillChange.send()
         

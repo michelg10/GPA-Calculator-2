@@ -163,7 +163,7 @@ func getPresets() -> [Course] {
         g11chinese
     ])
     
-    let ibElectives:[SizeDependentString] = [.init("Biology"), .init("Chemistry"), .init("Economics"), .init("ESS", "ESS"), .init("History"), .init("ITCS"), .init("Physics"), .init("Psych", "Psychology")]
+    let ibElectives:[SizeDependentString] = [.init("Biology"), .init("Chemistry"), .init("Economics"), .init("ESS", "ESS"), .init("History"), .init("ITCS"), .init("Music"), .init("Physics"), .init("Psych", "Psychology"), .init("VA", "Visual Arts")]
     let g11ib = Course.init(id: "stockshsidgrade11-ib", name: "Grade 11", subtitle: "IB (No EE)", useSmallLevelDisplay: true, subjectComputeGroup: [
         Subject.fastIb(name: "Math"),
         Subject.fastIb(name: "English"),
