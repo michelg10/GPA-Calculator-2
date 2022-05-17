@@ -21,11 +21,11 @@ class AppSingleton:ObservableObject {
     @Published var currentGPA="0.000"
     var allPresets: [Course]
     var appliedPresetIndex: Int = -1
-    var currentSelectedPresetIndex: Int=0
+    var currentSelectedPresetIndex: Int = 0
     var currentPreset: Course = .init(id: "", name: "", subjectComputeGroup: [])
-    var userNameChoiceIndex: [Int]=[]
-    var draftUserNameChoiceIndex: [Int]=[]
-    var presetOptions: [PresetOption]=[]
+    var userNameChoiceIndex: [Int] = []
+    var draftUserNameChoiceIndex: [Int] = []
+    var presetOptions: [PresetOption] = []
     var presetOptionsCount: Int=0
     var allowDateSave=false
     let defaults=UserDefaults.standard
@@ -124,7 +124,7 @@ class AppSingleton:ObservableObject {
             userNameChoiceIndex = Array(repeating: -1, count: currentPreset.getSubjects().count)
         }
         
-        prepareDraftForIndex()
+        prepareDraftForIndex(fromCurrentChoice: true)
         computeGPA()
     }
     init(loadSave: Bool) {
@@ -173,10 +173,14 @@ class AppSingleton:ObservableObject {
         objectWillChange.send()
         
     }
-    func prepareDraftForIndex() {
+    func prepareDraftForIndex(fromCurrentChoice: Bool) {
         draftUserNameChoiceIndex.append(contentsOf: Array(repeating: -1, count: max(allPresets[currentSelectedPresetIndex].getSubjects().count-draftUserNameChoiceIndex.count,0)))
         for i in 0..<draftUserNameChoiceIndex.count {
-            draftUserNameChoiceIndex[i] = -1
+            if fromCurrentChoice && i<userNameChoiceIndex.count {
+                draftUserNameChoiceIndex[i] = userNameChoiceIndex[i]
+            } else {
+                draftUserNameChoiceIndex[i] = -1
+            }
         }
         presetOptionsCount=0
         let allSubjects = allPresets[currentSelectedPresetIndex].getSubjects()

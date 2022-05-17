@@ -68,7 +68,7 @@ struct CustomizeView: View {
                             Button {
                                 vibrate(.medium)
                                 appSingleton.currentSelectedPresetIndex=index
-                                appSingleton.prepareDraftForIndex()
+                                appSingleton.prepareDraftForIndex(fromCurrentChoice: false)
                             } label: {
                                 PresetOptionView(selected: appSingleton.currentSelectedPresetIndex == index, name: appSingleton.allPresets[index].name, subtitle: appSingleton.allPresets[index].computedSubtitle)
                             }.buttonStyle(nilButtonStyle())
@@ -121,6 +121,9 @@ struct CustomizeView: View {
             .padding(.bottom, 40)
         }.navigationTitle("Customize")
             .background(Color.init("AntiPrimary"))
+            .onDisappear(perform: {
+                appSingleton.saveData()
+            })
     }
 }
 
