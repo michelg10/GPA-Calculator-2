@@ -80,7 +80,7 @@ struct ContentView: View {
                                     .padding(.leading, index == 0 ? 0 : 25)
                                 
                                 let subject=subjects[index]
-                                let userNameChoiceIndex=appSingleton.userNameChoiceIndex[index]
+                                let userNameChoiceIndex=appSingleton.userNameChoiceIndex[appSingleton.appliedPresetIndex][index]
                                 
                                 VStack(spacing: 19) {
                                     HStack(spacing:0) {
@@ -93,19 +93,19 @@ struct ContentView: View {
                                             }).frame(width: subjectTitleWidth, alignment: .leading)
                                         Spacer()
                                         SegmentedControlView(items: subject.getLevelNames(), selectedIndex: .init(get: {
-                                            appSingleton.userInput[typedIndex].levelIndex
+                                            appSingleton.userInput[appSingleton.appliedPresetIndex][typedIndex].levelIndex
                                         }, set: { val in
                                             vibrate(.light)
-                                            appSingleton.userInput[typedIndex].levelIndex=val
+                                            appSingleton.userInput[appSingleton.appliedPresetIndex][typedIndex].levelIndex=val
                                             appSingleton.computeGPA()
                                         })).frame(maxWidth: (appSingleton.currentPreset.useSmallLevelDisplay ? 170 : (horizontalSizeClass == .regular ? 470 : 265)))
                                         
                                     }
                                     Picker(selection: .init(get: {
-                                        appSingleton.userInput[typedIndex].scoreIndex
+                                        appSingleton.userInput[appSingleton.appliedPresetIndex][typedIndex].scoreIndex
                                     }, set: { x in
                                         vibrate(.light)
-                                        appSingleton.userInput[typedIndex].scoreIndex=x
+                                        appSingleton.userInput[appSingleton.appliedPresetIndex][typedIndex].scoreIndex=x
                                         appSingleton.computeGPA()
                                     })) {
                                         ForEach((0..<subject.scoreToBaseGPAMap.count), id:\.self) { index2 in

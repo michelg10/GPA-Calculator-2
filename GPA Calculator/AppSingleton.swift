@@ -19,18 +19,17 @@ struct PresetOption {
 }
 class AppSingleton:ObservableObject {
     @Published var currentGPA="0.000"
-    var allPresets: [Course]
     var appliedPresetIndex: Int = -1
-    var currentSelectedPresetIndex: Int = 0
-    var currentPreset: Course = .init(id: "", name: "", subjectComputeGroup: [])
-    var userNameChoiceIndex: [Int] = []
-    var draftUserNameChoiceIndex: [Int] = []
+    var currentPreset: Course {
+        presets[appliedPresetIndex]
+    }
+    var userNameChoiceIndex: [[Int]] = [[]]
     var presetOptions: [PresetOption] = []
     var presetOptionsCount: Int=0
     var allowDateSave=false
     let defaults=UserDefaults.standard
     
-    var userInput: [UserCourseInput] // important: this can be bigger than it should be. simply ignore the extra elements
+    var userInput: [[UserCourseInput]] // important: this can be bigger than it should be. simply ignore the extra elements
     var nameMode = NameMode.percentage
     
     func saveData() {
@@ -39,29 +38,31 @@ class AppSingleton:ObservableObject {
         }
         allowDateSave=false
         
-        defaults.setValue(1, forKey: "SaveVersion")
+        defaults.setValue(2, forKey: "SaveVersion")
         defaults.setValue(currentPreset.id, forKey: "PresetId")
         defaults.setValue(nameMode == .letter ? "Letter" : "Percentage", forKey: "NameMode")
-        for i in 0..<currentPreset.getSubjects().count {
-            defaults.setValue(userNameChoiceIndex[i], forKey: "Subject\(i)NameChoice")
-            defaults.setValue(userInput[i].levelIndex, forKey: "Subject\(i)LevelIndex")
-            defaults.setValue(userInput[i].scoreIndex, forKey: "Subject\(i)ScoreIndex")
+        for i in 0..<presets.count {
+            let presetId = presets[i].id
+            let subjects = presets[i].getSubjects()
+            for j in 0..<subjects.count {
+                defaults.setValue(userNameChoiceIndex[i][j], forKey: "\(presetId)-\(j)-NameChoice")
+                defaults.setValue(userInput[i][j].levelIndex, forKey: "\(presetId)-\(j)-LevelIndex")
+                defaults.setValue(userInput[i][j].scoreIndex, forKey: "\(presetId)-\(j)-ScoreIndex")
+            }
         }
         
         allowDateSave=true
-        defaults.synchronize()
     }
     static func defaultsHasPreset() -> Bool {
         let defaults = UserDefaults.standard
         if defaults.object(forKey: "SaveVersion")==nil {
             return false
         }
-        let allPresets = getPresets()
         if defaults.string(forKey: "PresetId") == nil {
             return false
         }
-        for i in allPresets {
-            if i.id == defaults.string(forKey: "PresetId")! {
+        for preset in presets {
+            if preset.id == defaults.string(forKey: "PresetId")! {
                 return true
             }
         }
@@ -69,67 +70,68 @@ class AppSingleton:ObservableObject {
     }
     func reloadFromSave() {
         let presetId = defaults.string(forKey: "PresetId")!
-        for i in 0..<allPresets.count {
-            if allPresets[i].id == presetId {
+        for i in 0..<presets.count {
+            if presets[i].id == presetId {
                 appliedPresetIndex = i
             }
         }
-        initializeFromPresetIndex()
+        let saveVersion = defaults.integer(forKey: "SaveVersion")
+        if saveVersion != 2 {
+            // remove everything to save space
+            let domain = Bundle.main.bundleIdentifier!
+            defaults.removePersistentDomain(forName: domain)
+            defaults.synchronize()
+        }
+        readUserNameChoiceAndInputFromSave()
         allowDateSave = true
         saveData()
     }
-    func initializeFromPresetIndex() {
-        currentPreset = allPresets[appliedPresetIndex]
-        currentSelectedPresetIndex=appliedPresetIndex
-        
-        let presetSubjects = currentPreset.getSubjects()
-        
-        userInput = Array(repeating: .init(levelIndex: 0, scoreIndex: 0), count: presetSubjects.count)
-        userNameChoiceIndex = Array(repeating: -1, count: presetSubjects.count)
-        
-        var dataFailure = false
-        for i in 0..<presetSubjects.count {
-            let nameChoice = defaults.object(forKey: "Subject\(i)NameChoice") as? Int
-            let levelIndex = defaults.object(forKey: "Subject\(i)LevelIndex") as? Int
-            let scoreIndex = defaults.object(forKey: "Subject\(i)ScoreIndex") as? Int
-            if nameChoice==nil||levelIndex==nil||scoreIndex==nil {
-                dataFailure=true
-                break
-            }
-            if presetSubjects[i].alternateNames == nil {
-                if nameChoice != -1 {
+    func readUserNameChoiceAndInputFromSave() {
+        for i in 0..<presets.count {
+            var dataFailure = false
+            let presetSubjects = presets[i].getSubjects()
+            let presetId = presets[i].id
+            for j in 0..<presetSubjects.count {
+                let nameChoice = defaults.object(forKey: "\(presetId)-\(j)-NameChoice") as? Int
+                let levelIndex = defaults.object(forKey: "\(presetId)-\(j)-LevelIndex") as? Int
+                let scoreIndex = defaults.object(forKey: "\(presetId)-\(j)-ScoreIndex") as? Int
+                if nameChoice==nil||levelIndex==nil||scoreIndex==nil {
                     dataFailure=true
                     break
                 }
-            } else {
-                if !(nameChoice == -1 || (nameChoice!>=0&&nameChoice!<presetSubjects[i].alternateNames!.count)) {
+                if presetSubjects[j].alternateNames == nil {
+                    if nameChoice != -1 {
+                        dataFailure=true
+                        break
+                    }
+                } else {
+                    if !(nameChoice == -1 || (nameChoice!>=0&&nameChoice!<presetSubjects[j].alternateNames!.count)) {
+                        dataFailure=true
+                        break
+                    }
+                }
+                if !(levelIndex!>=0&&levelIndex!<presetSubjects[j].levels.count) {
                     dataFailure=true
                     break
                 }
+                if !(scoreIndex!>=0&&scoreIndex!<presetSubjects[j].scoreToBaseGPAMap.count) {
+                    dataFailure=true
+                    break
+                }
+                userInput[i][j] = .init(levelIndex: levelIndex!, scoreIndex: scoreIndex!)
+                userNameChoiceIndex[i][j] = nameChoice!
             }
-            if !(levelIndex!>=0&&levelIndex!<presetSubjects[i].levels.count) {
-                dataFailure=true
-                break
+            if dataFailure {
+                userInput[i] = .init(repeating: .init(levelIndex: 0, scoreIndex: 0), count: userInput[i].count)
+                userNameChoiceIndex[i] = .init(repeating: -1, count: userNameChoiceIndex[i].count)
             }
-            if !(scoreIndex!>=0&&scoreIndex!<presetSubjects[i].scoreToBaseGPAMap.count) {
-                dataFailure=true
-                break
-            }
-            userInput[i] = .init(levelIndex: levelIndex!, scoreIndex: scoreIndex!)
-            userNameChoiceIndex[i] = nameChoice!
         }
-        
-        if dataFailure {
-            userInput = Array(repeating: .init(levelIndex: 0, scoreIndex: 0), count: currentPreset.getSubjects().count)
-            userNameChoiceIndex = Array(repeating: -1, count: currentPreset.getSubjects().count)
-        }
-        
-        prepareDraftForIndex(fromCurrentChoice: true)
+
+        prepareDraftForIndex()
         computeGPA()
     }
     init(loadSave: Bool) {
         allowDateSave = loadSave
-        allPresets = getPresets()
         userInput = []
         
         appliedPresetIndex=4 // random applied preset index for previews
@@ -139,20 +141,40 @@ class AppSingleton:ObservableObject {
         } else if savedNameMode == "Percentage" {
             nameMode = .percentage
         }
+        
+        
+        // initializing user course input and user name choices
+        userInput = Array(repeating: [], count: presets.count)
+        userNameChoiceIndex = Array(repeating: [], count: presets.count)
+        var maxRequiredSize = 0 // maximum required size to hold name choices for any preset
+        for i in 0..<userNameChoiceIndex.count {
+            let presetSubjectCount = presets[i].subjectsCount
+            maxRequiredSize = max(maxRequiredSize, presetSubjectCount)
+        }
+        for i in 0..<userNameChoiceIndex.count {
+            userInput[i] = Array(repeating: .init(levelIndex: 0, scoreIndex: 0), count: maxRequiredSize)
+            userNameChoiceIndex[i] = Array(repeating: -1, count: maxRequiredSize)
+        }
+        
         if loadSave {
             reloadFromSave()
         } else {
-            initializeFromPresetIndex()
+            readUserNameChoiceAndInputFromSave()
         }        
     }
+    
     func computeGPA() {
         saveData()
+        if appliedPresetIndex == -1 {
+            assertionFailure("Applied preset index is -1!")
+            return
+        }
         var finalGPA=0.0
         var finalGPATotalWeight=0.0
         var currentUserCourseInputIndex = 0
         for i in 0..<currentPreset.subjectComputeGroup.count {
             let computeGroupSubjectCount = currentPreset.subjectComputeGroup[i].getSubjects().count
-            let computeResult=currentPreset.subjectComputeGroup[i].computeGPA(userCourseInput: userInput[currentUserCourseInputIndex..<currentUserCourseInputIndex+computeGroupSubjectCount])
+            let computeResult=currentPreset.subjectComputeGroup[i].computeGPA(userCourseInput: userInput[appliedPresetIndex][currentUserCourseInputIndex..<currentUserCourseInputIndex+computeGroupSubjectCount])
             finalGPA+=computeResult.value*computeResult.weight;
             finalGPATotalWeight+=computeResult.weight;
             currentUserCourseInputIndex+=computeGroupSubjectCount
@@ -164,29 +186,20 @@ class AppSingleton:ObservableObject {
         }
         currentGPA=finalGPAString[finalGPAString.startIndex..<finalGPAString.index(finalGPAString.endIndex, offsetBy: -3)]+"."+finalGPAString[finalGPAString.index(finalGPAString.endIndex, offsetBy: -3)..<finalGPAString.endIndex]
     }
+    
     func resetUserCourseInput() {
-        for i in 0..<userInput.count {
-            userInput[i] = .init(levelIndex: 0, scoreIndex: 0)
+        for i in 0..<userInput[appliedPresetIndex].count {
+            userInput[appliedPresetIndex][i] = .init(levelIndex: 0, scoreIndex: 0)
         }
-        userInput.append(contentsOf: Array(repeating: .init(levelIndex: 0, scoreIndex: 0), count: max(currentPreset.getSubjects().count-userInput.count,0)))
         computeGPA()
         objectWillChange.send()
-        
     }
-    func prepareDraftForIndex(fromCurrentChoice: Bool) {
-        draftUserNameChoiceIndex.append(contentsOf: Array(repeating: -1, count: max(allPresets[currentSelectedPresetIndex].getSubjects().count-draftUserNameChoiceIndex.count,0)))
-        for i in 0..<draftUserNameChoiceIndex.count {
-            if fromCurrentChoice && i<userNameChoiceIndex.count {
-                draftUserNameChoiceIndex[i] = userNameChoiceIndex[i]
-            } else {
-                draftUserNameChoiceIndex[i] = -1
-            }
-        }
+    func prepareDraftForIndex() {
         presetOptionsCount=0
-        let allSubjects = allPresets[currentSelectedPresetIndex].getSubjects()
-        for i in 0..<allSubjects.count {
-            if allSubjects[i].alternateNames != nil {
-                let newOptionsObject = PresetOption.init(correspondingIndex: i, name: allSubjects[i].name, additionalChoicesSize: allSubjects[i].alternateNames!.count, additionalChoices: allSubjects[i].alternateNames!)
+        let subjects = presets[appliedPresetIndex].getSubjects()
+        for i in 0..<subjects.count {
+            if subjects[i].alternateNames != nil {
+                let newOptionsObject = PresetOption.init(correspondingIndex: i, name: subjects[i].name, additionalChoicesSize: subjects[i].alternateNames!.count, additionalChoices: subjects[i].alternateNames!)
                 if presetOptionsCount>=presetOptions.count {
                     presetOptions.append(newOptionsObject)
                 } else {
@@ -206,15 +219,7 @@ class AppSingleton:ObservableObject {
     }
     
     func applySelection() {
-        userNameChoiceIndex.append(contentsOf: Array(repeating: -1, count: max(draftUserNameChoiceIndex.count-userNameChoiceIndex.count, 0)))
-        for i in 0..<draftUserNameChoiceIndex.count {
-            userNameChoiceIndex[i]=draftUserNameChoiceIndex[i]
-        }
-        if (currentSelectedPresetIndex != appliedPresetIndex) {
-            appliedPresetIndex=currentSelectedPresetIndex
-            currentPreset=allPresets[appliedPresetIndex]
-            resetUserCourseInput()
-        }
+        computeGPA()
         objectWillChange.send()
     }
 }

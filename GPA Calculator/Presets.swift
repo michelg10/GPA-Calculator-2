@@ -32,7 +32,7 @@ struct Course {
     var subtitle: String?
     var useSmallLevelDisplay: Bool = false
     var subjectComputeGroup: [SubjectComputeGroup]
-    func getSubjects() -> [Subject] {
+    nonmutating func getSubjects() -> [Subject] {
         var rturn: [Subject] = []
         for i in subjectComputeGroup {
             rturn.append(contentsOf: i.getSubjects())

@@ -7,7 +7,7 @@
 
 import Foundation
 
-func getPresets() -> [Course] {
+var presets:[Course] = {
     let g6 = Course.init(id: "stockshsidgrade6", name: "Grade 6", subjectComputeGroup: [
         Subject.fastEnglish(weight: 6.5, hasAP: false),
         Subject.fastOther(name: "Math", weight: 6.5, hasSP: true, hasH: true, hasAL: false, hasAP: false),
@@ -212,4 +212,4 @@ func getPresets() -> [Course] {
     ])
     
     return [g6, g7, g8, g9, g10, g11_2m2_1m3, g11_1m2_1m3_1m45, g11_1m2_1m3_1m4_1m5, g11ib, g11ibEe, g12_2m2_1m3, g12_1m2_1m3_1m45, g12_1m2_1m3_1m4_1m5, g12ibEe]
-}
+}()

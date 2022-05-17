@@ -64,13 +64,13 @@ struct CustomizeView: View {
                         .font(.title)
                         .bold()
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 151))], spacing: 10) {
-                        ForEach((0..<appSingleton.allPresets.count), id: \.self) { index in
+                        ForEach((0..<presets.count), id: \.self) { index in
                             Button {
                                 vibrate(.medium)
-                                appSingleton.currentSelectedPresetIndex=index
-                                appSingleton.prepareDraftForIndex(fromCurrentChoice: false)
+                                appSingleton.appliedPresetIndex=index
+                                appSingleton.prepareDraftForIndex()
                             } label: {
-                                PresetOptionView(selected: appSingleton.currentSelectedPresetIndex == index, name: appSingleton.allPresets[index].name, subtitle: appSingleton.allPresets[index].computedSubtitle)
+                                PresetOptionView(selected: appSingleton.appliedPresetIndex == index, name: presets[index].name, subtitle: presets[index].computedSubtitle)
                             }.buttonStyle(nilButtonStyle())
                         }
                     }
@@ -92,11 +92,11 @@ struct CustomizeView: View {
                                         RoundedRectangle(cornerRadius: 9)
                                             .frame(width: 166, height: 37)
                                             .foregroundColor(.init("PresetOptionsBackground"))
-                                        Picker(selection: .init(get: {
-                                            appSingleton.draftUserNameChoiceIndex[appSingleton.presetOptions[index].correspondingIndex]
+                                        Picker(selection: .init(get: { () -> Int in
+                                            appSingleton.userNameChoiceIndex[appSingleton.appliedPresetIndex][appSingleton.presetOptions[index].correspondingIndex]
                                         }, set: { x in
                                             vibrate(.light)
-                                            appSingleton.draftUserNameChoiceIndex[appSingleton.presetOptions[index].correspondingIndex]=x
+                                            appSingleton.userNameChoiceIndex[appSingleton.appliedPresetIndex][appSingleton.presetOptions[index].correspondingIndex]=x
                                         })) {
                                             let baseNameText = appSingleton.presetOptions[index].name
                                             Text(horizontalSizeClass == .regular ? baseNameText.regular : baseNameText.compact).tag(-1)
@@ -115,7 +115,7 @@ struct CustomizeView: View {
                                 }
                             }
                         }
-                    }.id(String(appSingleton.currentSelectedPresetIndex)+"Prefs")
+                    }.id(String(appSingleton.appliedPresetIndex)+"Prefs")
                 }
             }.padding(.horizontal, 16)
             .padding(.bottom, 40)
