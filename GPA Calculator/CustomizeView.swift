@@ -97,6 +97,7 @@ struct CustomizeView: View {
                                         }, set: { x in
                                             vibrate(.light)
                                             appSingleton.userNameChoiceIndex[appSingleton.appliedPresetIndex][appSingleton.presetOptions[index].correspondingIndex]=x
+                                            appSingleton.update()
                                         })) {
                                             let baseNameText = appSingleton.presetOptions[index].name
                                             Text(horizontalSizeClass == .regular ? baseNameText.regular : baseNameText.compact).tag(-1)
@@ -129,6 +130,6 @@ struct CustomizeView: View {
 
 struct CustomizeView_Previews: PreviewProvider {
     static var previews: some View {
-        CustomizeView(nameMode: .constant(.letter), appSingleton: .init(loadSave: true))
+        CustomizeView(nameMode: .constant(.letter), appSingleton: .init(loadSave: false))
     }
 }

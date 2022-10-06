@@ -222,4 +222,8 @@ class AppSingleton:ObservableObject {
         computeGPA()
         objectWillChange.send()
     }
+    
+    func update() {
+        objectWillChange.send()
+    }
 }

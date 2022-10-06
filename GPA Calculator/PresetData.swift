@@ -50,7 +50,7 @@ var presets:[Course] = {
         Subject.fastOther(name: "History", weight: 4, hasSP: true, hasH: true, hasAL: false, hasAP: true, apCustomWeight: 5),
         Subject.fastOther(name: "Elective 1", weight: 3, alternateNames: g10ElectivesChoice, hasSP: false, hasH: true, hasAL: false, hasAP: true, apCustomWeight: 4),
         Subject.fastOther(name: "Elective 2", weight: 3, alternateNames: g10ElectivesChoice, hasSP: false, hasH: true, hasAL: false, hasAP: true, apCustomWeight: 4),
-        Subject.fastChinese(weight: 3, hasHP: false, middleName: "S/AP/5-7", isMiddleSchoolChinese: false),
+        Subject.fastChinese(weight: 3, hasHP: true, middleName: "S/AP/5-7", isMiddleSchoolChinese: false),
         Subject.fastOther(name: "Chemistry", weight: 3, hasSP: true, hasH: true, hasAL: false, hasAP: false),
         Subject.fastOther(name: "Physics", weight: 3, hasSP: true, hasH: true, hasAL: false, hasAP: false)
     ])
