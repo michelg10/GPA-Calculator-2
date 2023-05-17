@@ -45,22 +45,26 @@ struct SubjectDataInputView: View {
     var body: some View {
         VStack(spacing: 19) {
             HStack(spacing:0) {
-                Text((horizontalSizeClass == .regular ? name.regular : name.compact))
+                Text(name.getStringFor(horizontalUserInterfaceSizeClass: horizontalSizeClass))
                     .fixedSize()
                     .font(.system(size: 22, weight: .regular, design: .default))
                     .background(GeometryReader {geometry in
                         Color.clear.preference(key: MaxWidthPreferenceKey.self, value: geometry.size.width)
                     }).frame(width: subjectTitleWidth, alignment: .leading)
-                Spacer()
+                
+                Spacer(minLength: 0)
+                
+                // The picker for the subject level
                 SegmentedControlView(items: subject.getLevelNames(), selectedIndex: .init(get: {
                     appSingleton.userInput[appSingleton.appliedPresetIndex][subjectIndex].levelIndex
                 }, set: { val in
                     vibrate(.light)
-                    appSingleton.userInput[appSingleton.appliedPresetIndex][subjectIndex].levelIndex=val
+                    appSingleton.userInput[appSingleton.appliedPresetIndex][subjectIndex].levelIndex = val
                     appSingleton.computeGPA()
                 })).frame(maxWidth: (appSingleton.currentPreset.useSmallLevelDisplay ? 170 : (horizontalSizeClass == .regular ? 470 : 265)))
-                
             }
+            
+            // The picker for the score
             Picker(selection: .init(get: {
                 appSingleton.userInput[appSingleton.appliedPresetIndex][subjectIndex].scoreIndex
             }, set: { x in
@@ -68,9 +72,9 @@ struct SubjectDataInputView: View {
                 appSingleton.userInput[appSingleton.appliedPresetIndex][subjectIndex].scoreIndex=x
                 appSingleton.computeGPA()
             })) {
-                ForEach((0..<subject.scoreToBaseGPAMap.count), id:\.self) { subjectIndex2 in
-                    let currentScoreToBaseGPAMapItem = subject.scoreToBaseGPAMap[subjectIndex2]
-                    Text(appSingleton.nameMode == .percentage ? currentScoreToBaseGPAMapItem.percentageName : currentScoreToBaseGPAMapItem.letterName).tag(subjectIndex2)
+                ForEach((0..<subject.scoreAndBaseGPAPairs.count), id: \.self) { scoreIndex in
+                    let currentScoreAndBaseGPAPair = subject.scoreAndBaseGPAPairs[scoreIndex]
+                    Text(currentScoreAndBaseGPAPair.score.getName(forMode: appSingleton.nameMode)).tag(scoreIndex)
                 }
             } label: {
                 EmptyView()
@@ -78,7 +82,6 @@ struct SubjectDataInputView: View {
         }.frame(height: 114)
         .padding(.horizontal,11)
     }
-    
 }
 
 struct ContentView: View {

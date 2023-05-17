@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import SwiftUI
+
 enum NameMode:String, CaseIterable, Identifiable {    
     case percentage
     case letter
@@ -16,6 +18,21 @@ enum NameMode:String, CaseIterable, Identifiable {
 struct SizeDependentString {
     var compact: String
     var regular: String
+    
+    func getStringFor(horizontalUserInterfaceSizeClass: UserInterfaceSizeClass?) -> String {
+        guard let horizontalUserInterfaceSizeClass = horizontalUserInterfaceSizeClass else {
+            return regular
+        }
+        
+        switch horizontalUserInterfaceSizeClass {
+        case .compact:
+            return compact
+        case .regular:
+            return regular
+        @unknown default:
+            return regular
+        }
+    }
     
     init(_ compact: String, _ regular:String) {
         self.compact=compact
@@ -74,10 +91,28 @@ struct Level {
     var offset: Double
 }
 
-struct ScoreToBaseGPAMap {
+struct Score {
+    let percentageName: String
+    let letterName: String
+    
+    func getName(forMode nameMode: NameMode) -> String {
+        switch nameMode {
+        case .percentage:
+            return percentageName
+        case .letter:
+            return letterName
+        }
+    }
+}
+
+struct ScoreAndBaseGPAPair {
+    let score: Score
     var baseGPA: Double
-    var percentageName: String
-    var letterName: String
+    
+    init(percentageName: String, letterName: String, baseGPA: Double) {
+        self.score = .init(percentageName: percentageName, letterName: letterName)
+        self.baseGPA = baseGPA
+    }
 }
 
 protocol SubjectComputeGroup {
@@ -91,47 +126,41 @@ extension SubjectComputeGroup {
     }
 }
 
-var defaultScoreToBaseGPAMap: [ScoreToBaseGPAMap] = {
-    var defaultScoreToBaseGPAMap:[ScoreToBaseGPAMap]=[]
-    defaultScoreToBaseGPAMap.append(ScoreToBaseGPAMap(baseGPA: 0, percentageName:"0", letterName: "F"))
-    defaultScoreToBaseGPAMap.append(ScoreToBaseGPAMap(baseGPA: 2.6, percentageName:"60", letterName: "C/C-"))
-    defaultScoreToBaseGPAMap.append(ScoreToBaseGPAMap(baseGPA: 3.0, percentageName:"68", letterName: "C+"))
-    defaultScoreToBaseGPAMap.append(ScoreToBaseGPAMap(baseGPA: 3.3, percentageName:"73", letterName: "B-"))
-    defaultScoreToBaseGPAMap.append(ScoreToBaseGPAMap(baseGPA: 3.6, percentageName:"78", letterName: "B"))
-    defaultScoreToBaseGPAMap.append(ScoreToBaseGPAMap(baseGPA: 3.9, percentageName:"83", letterName: "B+"))
-    defaultScoreToBaseGPAMap.append(ScoreToBaseGPAMap(baseGPA: 4.2, percentageName:"88", letterName: "A-"))
-    defaultScoreToBaseGPAMap.append(ScoreToBaseGPAMap(baseGPA: 4.5, percentageName:"93", letterName: "A/A+"))
-    return defaultScoreToBaseGPAMap
-}()
+let defaultScoreToBaseGPAMap: [ScoreAndBaseGPAPair] = [
+    .init(percentageName: "0", letterName: "F", baseGPA: 0),
+    .init(percentageName:"60", letterName: "C/C-", baseGPA: 2.6),
+    .init(percentageName:"68", letterName: "C+", baseGPA: 3.0),
+    .init(percentageName:"73", letterName: "B-", baseGPA: 3.3),
+    .init(percentageName:"78", letterName: "B", baseGPA: 3.6),
+    .init(percentageName:"83", letterName: "B+", baseGPA: 3.9),
+    .init(percentageName:"88", letterName: "A-", baseGPA: 4.2),
+    .init(percentageName:"93", letterName: "A/A+", baseGPA: 4.5),
+]
 
-var ibScoreToBaseGPAMap: [ScoreToBaseGPAMap] = {
-    var ibScoreToBaseGPAMap:[ScoreToBaseGPAMap]=[]
-    ibScoreToBaseGPAMap.append(.init(baseGPA: 0, percentageName: "F", letterName: "F"))
-    ibScoreToBaseGPAMap.append(.init(baseGPA: 2.6, percentageName: "H4", letterName: "C/C-"))
-    ibScoreToBaseGPAMap.append(.init(baseGPA: 3.0, percentageName: "L5", letterName: "C+"))
-    ibScoreToBaseGPAMap.append(.init(baseGPA: 3.3, percentageName: "H5", letterName: "B-"))
-    ibScoreToBaseGPAMap.append(.init(baseGPA: 3.6, percentageName: "L6", letterName: "B"))
-    ibScoreToBaseGPAMap.append(.init(baseGPA: 3.9, percentageName: "H6", letterName: "B+"))
-    ibScoreToBaseGPAMap.append(.init(baseGPA: 4.2, percentageName: "L7", letterName: "A-"))
-    ibScoreToBaseGPAMap.append(.init(baseGPA: 4.5, percentageName: "H7", letterName: "A/A+"))
-    return ibScoreToBaseGPAMap
-}()
+var ibScoreToBaseGPAMap: [ScoreAndBaseGPAPair] = [
+    .init(percentageName: "F", letterName: "F", baseGPA: 0),
+    .init(percentageName: "H4", letterName: "C/C-", baseGPA: 2.6),
+    .init(percentageName: "L5", letterName: "C+", baseGPA: 3.0),
+    .init(percentageName: "H5", letterName: "B-", baseGPA: 3.3),
+    .init(percentageName: "L6", letterName: "B", baseGPA: 3.6),
+    .init(percentageName: "H6", letterName: "B+", baseGPA: 3.9),
+    .init(percentageName: "L7", letterName: "A-", baseGPA: 4.2),
+    .init(percentageName: "H7", letterName: "A/A+", baseGPA: 4.5)
+]
 
-var ibOtherScoreToBaseGPAMap: [ScoreToBaseGPAMap] = {
-    var ibOtherScoreToBaseGPAMap:[ScoreToBaseGPAMap]=[]
-    ibOtherScoreToBaseGPAMap.append(.init(baseGPA: 0.0, percentageName: "F", letterName: "F"))
-    ibOtherScoreToBaseGPAMap.append(.init(baseGPA: 0.0, percentageName: "D", letterName: "D"))
-    ibOtherScoreToBaseGPAMap.append(.init(baseGPA: 2.5, percentageName: "C", letterName: "C"))
-    ibOtherScoreToBaseGPAMap.append(.init(baseGPA: 4.0, percentageName: "B", letterName: "B"))
-    ibOtherScoreToBaseGPAMap.append(.init(baseGPA: 4.5, percentageName: "A", letterName: "A"))
-    return ibOtherScoreToBaseGPAMap
-}()
+var ibOtherScoreToBaseGPAMap: [ScoreAndBaseGPAPair] = [
+    .init(percentageName: "F", letterName: "F", baseGPA: 0.0),
+    .init(percentageName: "D", letterName: "D", baseGPA: 0.0),
+    .init(percentageName: "C", letterName: "C", baseGPA: 2.5),
+    .init(percentageName: "B", letterName: "B", baseGPA: 4.0),
+    .init(percentageName: "A", letterName: "A", baseGPA: 4.5)
+]
 
 struct Subject: SubjectComputeGroup {
     var name: SizeDependentString
     var alternateNames: [SizeDependentString]?
     var levels: [Level]
-    var scoreToBaseGPAMap: [ScoreToBaseGPAMap]
+    var scoreAndBaseGPAPairs: [ScoreAndBaseGPAPair]
     
     func getLevelNames() -> [String] {
         var rturn:[String]=[]
@@ -146,7 +175,7 @@ struct Subject: SubjectComputeGroup {
     }
     
     func computeGPA(userCourseInput: UserCourseInput) -> GPAComputePart {
-        return .init(value: max(scoreToBaseGPAMap[userCourseInput.scoreIndex].baseGPA+levels[userCourseInput.levelIndex].offset, 0), weight: levels[userCourseInput.levelIndex].weight)
+        return .init(value: max(scoreAndBaseGPAPairs[userCourseInput.scoreIndex].baseGPA+levels[userCourseInput.levelIndex].offset, 0), weight: levels[userCourseInput.levelIndex].weight)
     }
     
     func computeGPA(userCourseInput: ArraySlice<UserCourseInput>) -> GPAComputePart {
@@ -154,7 +183,7 @@ struct Subject: SubjectComputeGroup {
     }
     
     static func fastIbOther(name: String) -> Subject {
-        return .init(name: .init(name), alternateNames: nil, levels: [.init(name: "IB", weight: 0.5, offset: 0)], scoreToBaseGPAMap: ibOtherScoreToBaseGPAMap)
+        return .init(name: .init(name), alternateNames: nil, levels: [.init(name: "IB", weight: 0.5, offset: 0)], scoreAndBaseGPAPairs: ibOtherScoreToBaseGPAMap)
     }
     
     static func fastIb(name: String, alternateNames: [SizeDependentString]?=nil) -> Subject {
@@ -162,7 +191,7 @@ struct Subject: SubjectComputeGroup {
     }
     
     static func fastIb(name: SizeDependentString, alternateNames: [SizeDependentString]?=nil) -> Subject {
-        return .init(name: name, alternateNames: alternateNames, levels: [.init(name: "IB", weight: 1.0, offset: 0)], scoreToBaseGPAMap: ibScoreToBaseGPAMap)
+        return .init(name: name, alternateNames: alternateNames, levels: [.init(name: "IB", weight: 1.0, offset: 0)], scoreAndBaseGPAPairs: ibScoreToBaseGPAMap)
     }
     
     static func fastEnglish(weight: Double, hasAP: Bool) -> Subject {
@@ -174,7 +203,7 @@ struct Subject: SubjectComputeGroup {
         if hasAP {
             levels.append(.init(name: "AP", weight: weight, offset: 0))
         }
-        return .init(name: .init("English"), alternateNames: nil, levels: levels, scoreToBaseGPAMap: defaultScoreToBaseGPAMap)
+        return .init(name: .init("English"), alternateNames: nil, levels: levels, scoreAndBaseGPAPairs: defaultScoreToBaseGPAMap)
     }
     
     static func fastChinese(weight: Double, hasHP: Bool, middleName: String, isMiddleSchoolChinese: Bool) -> Subject {
@@ -192,7 +221,7 @@ struct Subject: SubjectComputeGroup {
                 levels[i].offset+=0.1
             }
         }
-        return .init(name: .init("Chinese"), alternateNames: nil, levels: levels, scoreToBaseGPAMap: defaultScoreToBaseGPAMap)
+        return .init(name: .init("Chinese"), alternateNames: nil, levels: levels, scoreAndBaseGPAPairs: defaultScoreToBaseGPAMap)
     }
     
     static func fastOther(name: String, weight: Double, alternateNames: [SizeDependentString]?=nil, hasSP: Bool, hasH: Bool, hasAL: Bool, hasAP: Bool, alCustomWeight: Double?=nil, apCustomWeight: Double?=nil) -> Subject {
@@ -214,7 +243,7 @@ struct Subject: SubjectComputeGroup {
         if hasAP {
             levels.append(.init(name: "AP", weight: apCustomWeight ?? weight, offset: 0))
         }
-        return .init(name: name, alternateNames: alternateNames, levels: levels, scoreToBaseGPAMap: defaultScoreToBaseGPAMap)
+        return .init(name: name, alternateNames: alternateNames, levels: levels, scoreAndBaseGPAPairs: defaultScoreToBaseGPAMap)
     }
 }
 

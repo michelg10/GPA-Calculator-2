@@ -114,7 +114,7 @@ class AppSingleton:ObservableObject {
                     dataFailure=true
                     break
                 }
-                if !(scoreIndex!>=0&&scoreIndex!<presetSubjects[j].scoreToBaseGPAMap.count) {
+                if !(scoreIndex!>=0&&scoreIndex!<presetSubjects[j].scoreAndBaseGPAPairs.count) {
                     dataFailure=true
                     break
                 }
@@ -165,10 +165,12 @@ class AppSingleton:ObservableObject {
     
     func computeGPA() {
         saveData()
+        
         if appliedPresetIndex == -1 {
             assertionFailure("Applied preset index is -1!")
             return
         }
+        
         var finalGPA=0.0
         var finalGPATotalWeight=0.0
         var currentUserCourseInputIndex = 0
@@ -184,6 +186,7 @@ class AppSingleton:ObservableObject {
         while finalGPAString.count<4 {
             finalGPAString.insert("0", at: finalGPAString.startIndex)
         }
+        
         currentGPA=finalGPAString[finalGPAString.startIndex..<finalGPAString.index(finalGPAString.endIndex, offsetBy: -3)]+"."+finalGPAString[finalGPAString.index(finalGPAString.endIndex, offsetBy: -3)..<finalGPAString.endIndex]
     }
     
