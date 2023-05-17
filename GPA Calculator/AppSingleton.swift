@@ -194,6 +194,7 @@ class AppSingleton:ObservableObject {
         computeGPA()
         objectWillChange.send()
     }
+    
     func prepareDraftForIndex() {
         presetOptionsCount=0
         let subjects = presets[appliedPresetIndex].getSubjects()
@@ -218,7 +219,7 @@ class AppSingleton:ObservableObject {
         objectWillChange.send()
     }
     
-    func applySelection() {
+    func recomputeGPA() {
         computeGPA()
         objectWillChange.send()
     }

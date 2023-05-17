@@ -40,6 +40,7 @@ struct CustomizeView: View {
     @Binding var nameMode: NameMode
     @ObservedObject var appSingleton: AppSingleton
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {

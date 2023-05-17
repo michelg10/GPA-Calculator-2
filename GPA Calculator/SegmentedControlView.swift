@@ -12,21 +12,21 @@ import SwiftUI
 struct SegmentedControlView: UIViewRepresentable {
     var items: [String]
     @Binding var selectedIndex: Int
+    
     func updateUIView(_ uiView: UISegmentedControl, context: Context) {
-        uiView.selectedSegmentIndex=selectedIndex
+        uiView.selectedSegmentIndex = selectedIndex
     }
+    
     func makeUIView(context: Context) -> UISegmentedControl {
-        let rturn = UISegmentedControl(items: items)
-        rturn.apportionsSegmentWidthsByContent=true
-//        rturn.translatesAutoresizingMaskIntoConstraints=false
-        rturn.selectedSegmentIndex=selectedIndex
-        for i in 0..<items.count {
-            rturn.setAction(UIAction(title: items[i]) { (action) in
-                selectedIndex=i
+        let view = UISegmentedControl(items: items)
+        view.apportionsSegmentWidthsByContent = true
+        view.selectedSegmentIndex = selectedIndex
+        for i in 0 ..< items.count {
+            view.setAction(UIAction(title: items[i]) { (action) in
+                selectedIndex = i
             }, forSegmentAt: i)
         }
-        
-        return rturn
+        return view
     }
 }
 #endif
@@ -35,6 +35,7 @@ struct SegmentedControlView: UIViewRepresentable {
 struct SegmentedControlView: View {
     var items: [String]
     @Binding var selectedIndex: Int
+    
     var body: some View {
         Picker(selection: $selectedIndex) {
             ForEach((0..<items.count), id:\.self) { index in

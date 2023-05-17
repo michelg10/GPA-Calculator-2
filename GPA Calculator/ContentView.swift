@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CircularButton: View {
+struct CapsuleButton: View {
     var text: String
     var body: some View {
         ZStack {
@@ -20,32 +20,85 @@ struct CircularButton: View {
     }
 }
 
-private extension ContentView {
-    struct SubjectTitleSizeKey: PreferenceKey {
-        static let defaultValue: CGFloat = 0
-        
-        static func reduce(value: inout CGFloat,
-                           nextValue: () -> CGFloat) {
-            value = max(value, nextValue())
-        }
+// MaxWidthPreferenceKey is a PreferenceKey.
+// SwiftUI uses PreferenceKey types to read values from views in the hierarchy that set a preference.
+struct MaxWidthPreferenceKey: PreferenceKey {
+    // The default value if no other value is provided.
+    static let defaultValue: CGFloat = 0
+    
+    // This function is called by SwiftUI to combine multiple values if they exist.
+    // In our case, it keeps the maximum width value.
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
     }
 }
 
-struct ContentView: View {
-    @ObservedObject var appSingleton: AppSingleton
-    @State var navAction:Int? = 0
-    @State private var subjectTitleWidth: CGFloat?
+
+struct SubjectDataInputView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @State var viewInit = false
+    var appSingleton: AppSingleton
+    var name: SizeDependentString
+    var subject: Subject
+    var subjectIndex: Int
+    var subjectTitleWidth: CGFloat?
+    
+    var body: some View {
+        VStack(spacing: 19) {
+            HStack(spacing:0) {
+                Text((horizontalSizeClass == .regular ? name.regular : name.compact))
+                    .fixedSize()
+                    .font(.system(size: 22, weight: .regular, design: .default))
+                    .background(GeometryReader {geometry in
+                        Color.clear.preference(key: MaxWidthPreferenceKey.self, value: geometry.size.width)
+                    }).frame(width: subjectTitleWidth, alignment: .leading)
+                Spacer()
+                SegmentedControlView(items: subject.getLevelNames(), selectedIndex: .init(get: {
+                    appSingleton.userInput[appSingleton.appliedPresetIndex][subjectIndex].levelIndex
+                }, set: { val in
+                    vibrate(.light)
+                    appSingleton.userInput[appSingleton.appliedPresetIndex][subjectIndex].levelIndex=val
+                    appSingleton.computeGPA()
+                })).frame(maxWidth: (appSingleton.currentPreset.useSmallLevelDisplay ? 170 : (horizontalSizeClass == .regular ? 470 : 265)))
+                
+            }
+            Picker(selection: .init(get: {
+                appSingleton.userInput[appSingleton.appliedPresetIndex][subjectIndex].scoreIndex
+            }, set: { x in
+                vibrate(.light)
+                appSingleton.userInput[appSingleton.appliedPresetIndex][subjectIndex].scoreIndex=x
+                appSingleton.computeGPA()
+            })) {
+                ForEach((0..<subject.scoreToBaseGPAMap.count), id:\.self) { subjectIndex2 in
+                    let currentScoreToBaseGPAMapItem = subject.scoreToBaseGPAMap[subjectIndex2]
+                    Text(appSingleton.nameMode == .percentage ? currentScoreToBaseGPAMapItem.percentageName : currentScoreToBaseGPAMapItem.letterName).tag(subjectIndex2)
+                }
+            } label: {
+                EmptyView()
+            }.pickerStyle(SegmentedPickerStyle())
+        }.frame(height: 114)
+        .padding(.horizontal,11)
+    }
+    
+}
+
+struct ContentView: View {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @StateObject var appSingleton: AppSingleton
+    @State var navAction:Int? = 0
+    @State var viewInitialized = false
+    @State var subjectTitleWidth: CGFloat?
     
     var body: some View {
         NavigationView {
             VStack(alignment: .center, spacing:0) {
+                
+                // Header
                 Text("GPA Calculator")
                     .font(.system(size: 28, weight: .semibold, design: .default))
                     .padding(.top, 25)
                 Text("Your GPA: \(appSingleton.currentGPA)")
                     .padding(.bottom, 15)
+                
                 ScrollView {
                     ZStack {
                         RoundedRectangle(cornerRadius: 14)
@@ -61,62 +114,32 @@ struct ContentView: View {
                                     navAction=1
                                     vibrate(.medium)
                                 } label: {
-                                    CircularButton(text: "Customize")
+                                    CapsuleButton(text: "Customize")
                                 }.buttonStyle(nilButtonStyle())
                                 Button {
                                     appSingleton.resetUserCourseInput()
                                     vibrate(.medium)
                                 } label: {
-                                    CircularButton(text: "Reset")
+                                    CapsuleButton(text: "Reset")
                                 }.buttonStyle(nilButtonStyle())
                             }.frame(height: 70)
+                            
                             let subjects = appSingleton.currentPreset.getSubjects()
                             
-                            ForEach((0..<subjects.count), id:\.self) { index in
-                                let typedIndex: Int = index
+                            ForEach((0..<subjects.count), id: \.self) { subjectIndex in
                                 Rectangle()
                                     .frame(height: 1)
                                     .foregroundColor(.init("Separator"))
-                                    .padding(.leading, index == 0 ? 0 : 25)
+                                    .padding(.leading, subjectIndex == 0 ? 0 : 25)
                                 
-                                let subject=subjects[index]
-                                let userNameChoiceIndex=appSingleton.userNameChoiceIndex[appSingleton.appliedPresetIndex][index]
+                                let subject = subjects[subjectIndex]
+                                let userNameChoiceIndex = appSingleton.userNameChoiceIndex[appSingleton.appliedPresetIndex][subjectIndex]
+                                let name = userNameChoiceIndex == -1 ? subject.name : subject.alternateNames![userNameChoiceIndex]
                                 
-                                VStack(spacing: 19) {
-                                    HStack(spacing:0) {
-                                        let name=userNameChoiceIndex == -1 ? subject.name : subject.alternateNames![userNameChoiceIndex]
-                                        Text((horizontalSizeClass == .regular ? name.regular : name.compact))
-                                            .fixedSize()
-                                            .font(.system(size: 22, weight: .regular, design: .default))
-                                            .background(GeometryReader {geometry in
-                                                Color.clear.preference(key: SubjectTitleSizeKey.self, value: geometry.size.width)
-                                            }).frame(width: subjectTitleWidth, alignment: .leading)
-                                        Spacer()
-                                        SegmentedControlView(items: subject.getLevelNames(), selectedIndex: .init(get: {
-                                            appSingleton.userInput[appSingleton.appliedPresetIndex][typedIndex].levelIndex
-                                        }, set: { val in
-                                            vibrate(.light)
-                                            appSingleton.userInput[appSingleton.appliedPresetIndex][typedIndex].levelIndex=val
-                                            appSingleton.computeGPA()
-                                        })).frame(maxWidth: (appSingleton.currentPreset.useSmallLevelDisplay ? 170 : (horizontalSizeClass == .regular ? 470 : 265)))
-                                        
+                                SubjectDataInputView(appSingleton: appSingleton, name: name, subject: subject, subjectIndex: subjectIndex, subjectTitleWidth: subjectTitleWidth)
+                                    .onPreferenceChange(MaxWidthPreferenceKey.self) { value in
+                                        subjectTitleWidth = max(subjectTitleWidth ?? 0, value)
                                     }
-                                    Picker(selection: .init(get: {
-                                        appSingleton.userInput[appSingleton.appliedPresetIndex][typedIndex].scoreIndex
-                                    }, set: { x in
-                                        vibrate(.light)
-                                        appSingleton.userInput[appSingleton.appliedPresetIndex][typedIndex].scoreIndex=x
-                                        appSingleton.computeGPA()
-                                    })) {
-                                        ForEach((0..<subject.scoreToBaseGPAMap.count), id:\.self) { index2 in
-                                            let currentScoreToBaseGPAMapItem = subject.scoreToBaseGPAMap[index2]
-                                            Text(appSingleton.nameMode == .percentage ? currentScoreToBaseGPAMapItem.percentageName : currentScoreToBaseGPAMapItem.letterName).tag(index2)
-                                        }
-                                    } label: {
-                                        EmptyView()
-                                    }.pickerStyle(SegmentedPickerStyle())
-                                }.frame(height: 114)
-                                    .padding(.horizontal,11)
                             }.id(appSingleton.currentPreset.id)
                         }
                     }
@@ -125,18 +148,16 @@ struct ContentView: View {
                 .padding(.bottom, 20)
                 .navigationBarHidden(true)
                 .onAppear {
-                    if viewInit {
-                        appSingleton.applySelection()
+                    if viewInitialized {
+                        appSingleton.recomputeGPA()
                         vibrate(.medium)
                     }
-                    viewInit=true
+                    viewInitialized=true
                 }
                 .background(Color.init("AntiPrimary"))
         }
         .navigationViewStyle(.stack)
-        .onPreferenceChange(SubjectTitleSizeKey.self) {
-            subjectTitleWidth = $0
-        }.navigationBarHidden(true)
+        .navigationBarHidden(true)
     }
 }
 

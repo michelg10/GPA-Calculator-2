@@ -12,6 +12,7 @@ enum NameMode:String, CaseIterable, Identifiable {
     
     var id: String { self.rawValue }
 }
+
 struct SizeDependentString {
     var compact: String
     var regular: String
@@ -26,6 +27,7 @@ struct SizeDependentString {
         self.regular=compact
     }
 }
+
 struct Course {
     var id: String
     var name: String
@@ -55,33 +57,40 @@ struct Course {
         return "\(getSubjects().count) subjects"
     }
 }
+
 struct UserCourseInput {
     var levelIndex: Int
     var scoreIndex: Int
 }
+
 struct GPAComputePart {
     var value: Double
     var weight: Double
 }
+
 struct Level {
     var name: String
     var weight: Double
     var offset: Double
 }
+
 struct ScoreToBaseGPAMap {
     var baseGPA: Double
     var percentageName: String
     var letterName: String
 }
+
 protocol SubjectComputeGroup {
     func getSubjects() -> [Subject] // flatten it
     func computeGPA(userCourseInput: ArraySlice<UserCourseInput>) -> GPAComputePart
 }
+
 extension SubjectComputeGroup {
     func computeGPA(userCourseInput: [UserCourseInput]) -> GPAComputePart {
         computeGPA(userCourseInput: userCourseInput[0..<userCourseInput.count])
     }
 }
+
 var defaultScoreToBaseGPAMap: [ScoreToBaseGPAMap] = {
     var defaultScoreToBaseGPAMap:[ScoreToBaseGPAMap]=[]
     defaultScoreToBaseGPAMap.append(ScoreToBaseGPAMap(baseGPA: 0, percentageName:"0", letterName: "F"))
@@ -94,6 +103,7 @@ var defaultScoreToBaseGPAMap: [ScoreToBaseGPAMap] = {
     defaultScoreToBaseGPAMap.append(ScoreToBaseGPAMap(baseGPA: 4.5, percentageName:"93", letterName: "A/A+"))
     return defaultScoreToBaseGPAMap
 }()
+
 var ibScoreToBaseGPAMap: [ScoreToBaseGPAMap] = {
     var ibScoreToBaseGPAMap:[ScoreToBaseGPAMap]=[]
     ibScoreToBaseGPAMap.append(.init(baseGPA: 0, percentageName: "F", letterName: "F"))
@@ -106,6 +116,7 @@ var ibScoreToBaseGPAMap: [ScoreToBaseGPAMap] = {
     ibScoreToBaseGPAMap.append(.init(baseGPA: 4.5, percentageName: "H7", letterName: "A/A+"))
     return ibScoreToBaseGPAMap
 }()
+
 var ibOtherScoreToBaseGPAMap: [ScoreToBaseGPAMap] = {
     var ibOtherScoreToBaseGPAMap:[ScoreToBaseGPAMap]=[]
     ibOtherScoreToBaseGPAMap.append(.init(baseGPA: 0.0, percentageName: "F", letterName: "F"))
@@ -115,6 +126,7 @@ var ibOtherScoreToBaseGPAMap: [ScoreToBaseGPAMap] = {
     ibOtherScoreToBaseGPAMap.append(.init(baseGPA: 4.5, percentageName: "A", letterName: "A"))
     return ibOtherScoreToBaseGPAMap
 }()
+
 struct Subject: SubjectComputeGroup {
     var name: SizeDependentString
     var alternateNames: [SizeDependentString]?
@@ -128,12 +140,15 @@ struct Subject: SubjectComputeGroup {
         }
         return rturn
     }
+    
     func getSubjects() -> [Subject] {
         return [self]
     }
+    
     func computeGPA(userCourseInput: UserCourseInput) -> GPAComputePart {
         return .init(value: max(scoreToBaseGPAMap[userCourseInput.scoreIndex].baseGPA+levels[userCourseInput.levelIndex].offset, 0), weight: levels[userCourseInput.levelIndex].weight)
     }
+    
     func computeGPA(userCourseInput: ArraySlice<UserCourseInput>) -> GPAComputePart {
         return computeGPA(userCourseInput: userCourseInput[userCourseInput.startIndex])
     }
@@ -141,12 +156,15 @@ struct Subject: SubjectComputeGroup {
     static func fastIbOther(name: String) -> Subject {
         return .init(name: .init(name), alternateNames: nil, levels: [.init(name: "IB", weight: 0.5, offset: 0)], scoreToBaseGPAMap: ibOtherScoreToBaseGPAMap)
     }
+    
     static func fastIb(name: String, alternateNames: [SizeDependentString]?=nil) -> Subject {
         return fastIb(name: SizeDependentString.init(name), alternateNames: alternateNames)
     }
+    
     static func fastIb(name: SizeDependentString, alternateNames: [SizeDependentString]?=nil) -> Subject {
         return .init(name: name, alternateNames: alternateNames, levels: [.init(name: "IB", weight: 1.0, offset: 0)], scoreToBaseGPAMap: ibScoreToBaseGPAMap)
     }
+    
     static func fastEnglish(weight: Double, hasAP: Bool) -> Subject {
         var levels: [Level]=[]
         levels.append(.init(name: "S", weight: weight, offset: -0.5))
@@ -158,6 +176,7 @@ struct Subject: SubjectComputeGroup {
         }
         return .init(name: .init("English"), alternateNames: nil, levels: levels, scoreToBaseGPAMap: defaultScoreToBaseGPAMap)
     }
+    
     static func fastChinese(weight: Double, hasHP: Bool, middleName: String, isMiddleSchoolChinese: Bool) -> Subject {
         var levels: [Level]=[]
         levels.append(.init(name: "1-2", weight: weight, offset: -0.5))
@@ -179,6 +198,7 @@ struct Subject: SubjectComputeGroup {
     static func fastOther(name: String, weight: Double, alternateNames: [SizeDependentString]?=nil, hasSP: Bool, hasH: Bool, hasAL: Bool, hasAP: Bool, alCustomWeight: Double?=nil, apCustomWeight: Double?=nil) -> Subject {
         return fastOther(name: .init(name), weight: weight, alternateNames: alternateNames, hasSP: hasSP, hasH: hasH, hasAL: hasAL, hasAP: hasAP, alCustomWeight: alCustomWeight, apCustomWeight: apCustomWeight)
     }
+    
     static func fastOther(name: SizeDependentString, weight: Double, alternateNames: [SizeDependentString]?=nil, hasSP: Bool, hasH: Bool, hasAL: Bool, hasAP: Bool, alCustomWeight: Double?=nil, apCustomWeight: Double?=nil) -> Subject {
         var levels: [Level]=[]
         levels.append(.init(name: "S", weight: weight, offset: -0.5))
@@ -197,12 +217,14 @@ struct Subject: SubjectComputeGroup {
         return .init(name: name, alternateNames: alternateNames, levels: levels, scoreToBaseGPAMap: defaultScoreToBaseGPAMap)
     }
 }
+
 struct maxSubjectGroup: SubjectComputeGroup {
     var subjects: [Subject]
     
     func getSubjects() -> [Subject] {
         return subjects
     }
+    
     func computeGPA(userCourseInput: ArraySlice<UserCourseInput>) -> GPAComputePart {
         var rturn: GPAComputePart=subjects[0].computeGPA(userCourseInput: userCourseInput[userCourseInput.startIndex])
         for i in 1..<subjects.count {
@@ -216,12 +238,15 @@ struct maxSubjectGroup: SubjectComputeGroup {
         return rturn
     }
 }
+
 struct comboSubjectGroup: SubjectComputeGroup {
     var comboMatrix: [[Double]]
     var subjects: [Subject]
+    
     func getSubjects() -> [Subject] {
         return subjects
     }
+    
     func computeGPA(userCourseInput: ArraySlice<UserCourseInput>) -> GPAComputePart {
         return .init(value: comboMatrix[userCourseInput[userCourseInput.startIndex].scoreIndex][userCourseInput[userCourseInput.startIndex+1].scoreIndex], weight: subjects[0].levels[userCourseInput[userCourseInput.startIndex].levelIndex].weight)
     }

@@ -94,6 +94,7 @@ var presets:[Course] = {
         .init("Japanese"),
         .init("Singing"),
     ]
+    
     var module45Options=module4Options
     module45Options.append(contentsOf: module5Options)
     let g11m2=Subject.fastOther(name: "Module 2", weight: 6, alternateNames: module2Options, hasSP: true, hasH: true, hasAL: true, hasAP: true)

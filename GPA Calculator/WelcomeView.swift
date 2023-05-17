@@ -10,6 +10,7 @@ import SwiftUI
 struct WelcomeView: View {
     @State var navAction:Int? = 0
     var appSingleton: AppSingleton
+    
     var body: some View {
         NavigationView {
             VStack(spacing:0) {
