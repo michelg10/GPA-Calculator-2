@@ -59,7 +59,7 @@ struct Preset {
             
             // Accumulate the weighted GPA and the total weight
             gpa += computeResult.weightedValue
-            gpaTotalWeight += computeResult.weight;
+            gpaTotalWeight += computeResult.weight
             
             // Move the current index to the next subject group
             currentUserCourseInputIndex += computeGroupSubjectCount
@@ -80,8 +80,8 @@ struct UserCourseInput {
 
 // `GPAComputePart` represents the result of a GPA computation
 struct GPAComputePart {
-    var value: Double  // The computed GPA value
-    var weight: Double  // The weight assigned to this GPA computation
+    let value: Double  // The computed GPA value
+    let weight: Double  // The weight assigned to this GPA computation
 
     // Weighted GPA value is the product of the GPA value and its corresponding weight
     var weightedValue: Double {
@@ -91,9 +91,9 @@ struct GPAComputePart {
 
 // `Level` represents the level of a course and its associated attributes
 struct Level {
-    var name: String  // The name of the level
-    var weight: Double  // The weight assigned to this level
-    var offset: Double  // Offset used in GPA calculation for this level
+    let name: String  // The name of the level
+    let weight: Double  // The weight assigned to this level
+    let offset: Double  // Offset used in GPA calculation for this level
 }
 
 // `Score` represents the score of a course and its different representations
@@ -115,7 +115,7 @@ struct Score {
 // `ScoreAndBaseGPAPair` pairs a `Score` with a base GPA value
 struct ScoreAndBaseGPAPair {
     let score: Score  // The score object
-    var baseGPA: Double  // The base GPA corresponding to the score
+    let baseGPA: Double  // The base GPA corresponding to the score
     
     init(percentageName: String, letterName: String, baseGPA: Double) {
         self.score = .init(percentageName: percentageName, letterName: letterName)
@@ -139,6 +139,8 @@ extension SubjectGroup {
     }
 }
 
+// `defaultScoreAndBaseGPAPair` represents the mapping between scores and GPAs in a typical grading system.
+// Each pair contains a percentage score ("percentageName"), a corresponding letter grade ("letterName"), and the equivalent GPA ("baseGPA").
 let defaultScoreAndBaseGPAPair: [ScoreAndBaseGPAPair] = [
     .init(percentageName: "0", letterName: "F", baseGPA: 0),
     .init(percentageName:"60", letterName: "C/C-", baseGPA: 2.6),
@@ -150,6 +152,8 @@ let defaultScoreAndBaseGPAPair: [ScoreAndBaseGPAPair] = [
     .init(percentageName:"93", letterName: "A/A+", baseGPA: 4.5),
 ]
 
+// `ibScoreAndBaseGPAPair` represents the mapping between scores and GPAs in the International Baccalaureate (IB) system.
+// The naming for the IB score system differs from the typical grading system, hence the different names used for "percentageName".
 let ibScoreAndBaseGPAPair: [ScoreAndBaseGPAPair] = [
     .init(percentageName: "F", letterName: "F", baseGPA: 0),
     .init(percentageName: "H4", letterName: "C/C-", baseGPA: 2.6),
@@ -161,6 +165,8 @@ let ibScoreAndBaseGPAPair: [ScoreAndBaseGPAPair] = [
     .init(percentageName: "H7", letterName: "A/A+", baseGPA: 4.5)
 ]
 
+// `ibOtherScoreToBaseGPAPair` represents another mapping between scores and GPAs used in the IB system, for ToK and EE.
+// Similar to `ibScoreAndBaseGPAPair`, this array uses the specific naming scheme used in the IB grading system.
 let ibOtherScoreToBaseGPAPair: [ScoreAndBaseGPAPair] = [
     .init(percentageName: "F", letterName: "F", baseGPA: 0.0),
     .init(percentageName: "D", letterName: "D", baseGPA: 0.0),
@@ -169,47 +175,69 @@ let ibOtherScoreToBaseGPAPair: [ScoreAndBaseGPAPair] = [
     .init(percentageName: "A", letterName: "A", baseGPA: 4.5)
 ]
 
-/// A subject group consisting of a single subject
+/// A `Subject` represents a single subject group, conforming to the `SubjectGroup` protocol.
+/// It contains information about the subject's name, alternative names, levels, and GPA computation details.
 struct Subject: SubjectGroup {
-    var name: SizeDependentString
-    var alternateNames: [SizeDependentString]?
-    var levels: [Level]
-    var scoreAndBaseGPAPairs: [ScoreAndBaseGPAPair]
+    // Name of the subject that varies with the display size.
+    let name: SizeDependentString
+    // List of alternative names for the subject.
+    let alternateNames: [SizeDependentString]?
+    // Different levels of study that the subject can be studied at.
+    let levels: [Level]
+    // List of pairs mapping a score to a base GPA.
+    let scoreAndBaseGPAPairs: [ScoreAndBaseGPAPair]
     
+    /// Returns the names of the different levels of the subject.
     func getLevelNames() -> [String] {
-        var rturn:[String]=[]
+        // Prepare an array to hold the level names
+        var result: [String] = []
+        // Iterate over levels and gather their names
         for i in levels {
-            rturn.append(i.name)
+            result.append(i.name)
         }
-        return rturn
+        // Return the level names
+        return result
     }
     
+    /// Since `Subject` is a `SubjectGroup` of a single subject, it returns itself when `getSubjects` is called.
     func getSubjects() -> [Subject] {
         return [self]
     }
     
+    /// Computes the GPA based on a `UserCourseInput`.
+    /// It computes a weighted GPA based on the score index and level index given in the `UserCourseInput`.
     func computeGPA(userCourseInput: UserCourseInput) -> GPAComputePart {
-        return .init(value: max(scoreAndBaseGPAPairs[userCourseInput.scoreIndex].baseGPA+levels[userCourseInput.levelIndex].offset, 0), weight: levels[userCourseInput.levelIndex].weight)
+        return .init(value: max(scoreAndBaseGPAPairs[userCourseInput.scoreIndex].baseGPA + levels[userCourseInput.levelIndex].offset, 0), weight: levels[userCourseInput.levelIndex].weight)
     }
     
+    /// Computes the GPA based on a `ArraySlice<UserCourseInput>`.
+    /// Since `Subject` is a single subject, it uses the first `UserCourseInput` in the slice.
     func computeGPA(userCourseInput: ArraySlice<UserCourseInput>) -> GPAComputePart {
         return computeGPA(userCourseInput: userCourseInput[userCourseInput.startIndex])
     }
     
-    static func fastIbOther(name: String) -> Subject {
+    /// Convenience initializer to quickly create an IB subject with a specific name.
+    /// The method uses specific settings relevant for IB EE and ToK.
+    static func defaultIbOther(name: String) -> Subject {
         return .init(name: .init(name), alternateNames: nil, levels: [.init(name: "IB", weight: 0.5, offset: 0)], scoreAndBaseGPAPairs: ibOtherScoreToBaseGPAPair)
     }
     
-    static func fastIb(name: String, alternateNames: [SizeDependentString]? = nil) -> Subject {
-        return fastIb(name: SizeDependentString.init(name), alternateNames: alternateNames)
+    /// Convenience initializer to quickly create an IB subject with a specific name.
+    /// The method uses specific settings relevant for IB subjects.
+    static func defaultIb(name: String, alternateNames: [SizeDependentString]? = nil) -> Subject {
+        return defaultIb(name: SizeDependentString.init(name), alternateNames: alternateNames)
     }
     
-    static func fastIb(name: SizeDependentString, alternateNames: [SizeDependentString]? = nil) -> Subject {
+    /// Convenience initializer to quickly create an IB subject with a specific name.
+    /// The method uses specific settings relevant for IB subjects.
+    static func defaultIb(name: SizeDependentString, alternateNames: [SizeDependentString]? = nil) -> Subject {
         return .init(name: name, alternateNames: alternateNames, levels: [.init(name: "IB", weight: 1.0, offset: 0)], scoreAndBaseGPAPairs: ibScoreAndBaseGPAPair)
     }
     
-    static func fastEnglish(weight: Double, hasAP: Bool) -> Subject {
-        var levels: [Level]=[]
+    /// Convenience initializer to quickly create an English subject with a specific weight.
+    /// The method uses specific settings relevant for English subjects, with an optional AP level.
+    static func defaultEnglish(weight: Double, hasAP: Bool) -> Subject {
+        var levels: [Level] = []
         levels.append(.init(name: "S", weight: weight, offset: -0.5))
         levels.append(.init(name: "S+", weight: weight, offset: -0.4))
         levels.append(.init(name: "H", weight: weight, offset: -0.2))
@@ -220,29 +248,33 @@ struct Subject: SubjectGroup {
         return .init(name: .init("English"), alternateNames: nil, levels: levels, scoreAndBaseGPAPairs: defaultScoreAndBaseGPAPair)
     }
     
-    static func fastChinese(weight: Double, hasHP: Bool, middleLevelName: String, isMiddleSchoolChinese: Bool) -> Subject {
-        var levels: [Level]=[]
-        levels.append(.init(name: "1-2", weight: weight, offset: -0.5))
-        levels.append(.init(name: "3-4", weight: weight, offset: -0.4))
-        levels.append(.init(name: middleLevelName, weight: weight, offset: -0.3))
-        levels.append(.init(name: "H", weight: weight, offset: -0.2))
-        if (hasHP) {
-            levels.append(.init(name: "H+", weight: weight, offset: -0.1))
+    /// Convenience initializer to quickly create a Chinese subject with a specific weight.
+    /// The method uses specific settings relevant for Chinese subjects, with an optional H+ level.
+    static func defaultChinese(weight: Double, hasHP: Bool, middleLevelName: String, isMiddleSchoolChinese: Bool) -> Subject {
+        // Middle school Chinese has GPA offsets 0.1 higher
+        let levelsOffsetOffset = isMiddleSchoolChinese ? 0.1 : 0
+        
+        var levels: [Level] = []
+        levels.append(.init(name: "1-2", weight: weight, offset: -0.5 + levelsOffsetOffset))
+        levels.append(.init(name: "3-4", weight: weight, offset: -0.4 + levelsOffsetOffset))
+        levels.append(.init(name: middleLevelName, weight: weight, offset: -0.3 + levelsOffsetOffset))
+        levels.append(.init(name: "H", weight: weight, offset: -0.2 + levelsOffsetOffset))
+        if hasHP {
+            levels.append(.init(name: "H+", weight: weight, offset: -0.1 + levelsOffsetOffset))
         }
         
-        if isMiddleSchoolChinese {
-            for i in 0..<levels.count {
-                levels[i].offset += 0.1
-            }
-        }
         return .init(name: .init("Chinese"), alternateNames: nil, levels: levels, scoreAndBaseGPAPairs: defaultScoreAndBaseGPAPair)
     }
     
-    static func fastOther(name: String, weight: Double, alternateNames: [SizeDependentString]? = nil, hasSP: Bool, hasH: Bool, hasAL: Bool, hasAP: Bool, alCustomWeight: Double? = nil, apCustomWeight: Double? = nil) -> Subject {
-        return fastOther(name: .init(name), weight: weight, alternateNames: alternateNames, hasSP: hasSP, hasH: hasH, hasAL: hasAL, hasAP: hasAP, alCustomWeight: alCustomWeight, apCustomWeight: apCustomWeight)
+    /// Convenience initializer to quickly create other subjects with a specific weight.
+    /// The method uses specific settings relevant for other subjects, with optional S+, H, A-level, AP levels.
+    static func defaultOther(name: String, weight: Double, alternateNames: [SizeDependentString]? = nil, hasSP: Bool, hasH: Bool, hasAL: Bool, hasAP: Bool, alCustomWeight: Double? = nil, apCustomWeight: Double? = nil) -> Subject {
+        return defaultOther(name: .init(name), weight: weight, alternateNames: alternateNames, hasSP: hasSP, hasH: hasH, hasAL: hasAL, hasAP: hasAP, alCustomWeight: alCustomWeight, apCustomWeight: apCustomWeight)
     }
     
-    static func fastOther(name: SizeDependentString, weight: Double, alternateNames: [SizeDependentString]? = nil, hasSP: Bool, hasH: Bool, hasAL: Bool, hasAP: Bool, alCustomWeight: Double? = nil, apCustomWeight: Double? = nil) -> Subject {
+    /// Convenience initializer to quickly create other subjects with a specific weight.
+    /// The method uses specific settings relevant for other subjects, with optional S+, H, A-level, AP levels.
+    static func defaultOther(name: SizeDependentString, weight: Double, alternateNames: [SizeDependentString]? = nil, hasSP: Bool, hasH: Bool, hasAL: Bool, hasAP: Bool, alCustomWeight: Double? = nil, apCustomWeight: Double? = nil) -> Subject {
         var levels: [Level] = []
         levels.append(.init(name: "S", weight: weight, offset: -0.5))
         if hasSP {
@@ -261,14 +293,31 @@ struct Subject: SubjectGroup {
     }
 }
 
-/// A subject group where the resulting GPA is the maximum of the GPA of the constituent subjects
+/// `MaxSubjectGroup` represents a group of subjects where the resulting GPA
+/// is the maximum of the GPAs of the constituent subjects.
+///
+/// This struct can be used in scenarios where you want to take a group of subjects
+/// and treat them as a unit for GPA calculation purposes, but only the highest GPA among them
+/// contributes to the overall GPA.
 struct MaxSubjectGroup: SubjectGroup {
-    var subjects: [Subject]
+    // The subjects in the group.
+    let subjects: [Subject]
     
+    /// Retrieves the subjects within this group.
+    ///
+    /// - Returns: An array of `Subject` instances in this group.
     func getSubjects() -> [Subject] {
         return subjects
     }
     
+    /// Computes the GPA for the subjects based on the user's course input.
+    ///
+    /// The resulting GPA is the maximum of the GPAs of the subjects in the group.
+    /// This method iterates through the subjects, computes the GPA for each one,
+    /// and updates the resulting GPA if the computed GPA is greater.
+    ///
+    /// - Parameter userCourseInput: The slice of user course input related to this group of subjects.
+    /// - Returns: A `GPAComputePart` instance representing the computed GPA and its associated weight.
     func computeGPA(userCourseInput: ArraySlice<UserCourseInput>) -> GPAComputePart {
         var resultingComputePart: GPAComputePart = subjects[0].computeGPA(userCourseInput: userCourseInput[userCourseInput.startIndex])
         for i in 1..<subjects.count {
@@ -283,17 +332,35 @@ struct MaxSubjectGroup: SubjectGroup {
     }
 }
 
-/// A subject group where the resulting GPA is dependent on the scores of both subjects. The resulting GPA is from `baseGPAMatrix`
-/// Note that the levels of the subjects in this group do not impact the resulting base GPA. Offset is taken to be 0 at all times.
-/// The weight of the entire group is taken to be the weight of the first level in the first subject.
+/// `DoubleSubjectGroup` represents a group of two subjects where the resulting GPA
+/// is dependent on the scores of both subjects and retrieved from a 2D matrix `baseGPAMatrix`.
+///
+/// This struct is used when the GPA is not calculated independently from each subject's score,
+/// but instead is determined by a combination of the scores from both subjects.
+/// Note that the levels of the subjects in this group do not impact the resulting base GPA.
+/// Offset is always considered to be 0.
+/// The weight of the entire group is taken from the first level of the first subject.
 struct DoubleSubjectGroup: SubjectGroup {
-    var baseGPAMatrix: [[Double]]
-    var subjects: [Subject]
+    // 2D matrix to look up the GPA based on scores from both subjects.
+    let baseGPAMatrix: [[Double]]
+    // The subjects in the group.
+    let subjects: [Subject]
     
+    /// Retrieves the subjects within this group.
+    ///
+    /// - Returns: An array of `Subject` instances in this group.
     func getSubjects() -> [Subject] {
         return subjects
     }
     
+    /// Computes the GPA for the subjects based on the user's course input.
+    ///
+    /// The resulting GPA is dependent on the scores of both subjects and is retrieved
+    /// from the 2D matrix `baseGPAMatrix`. The weight of the GPA is determined by the
+    /// first level's weight of the first subject.
+    ///
+    /// - Parameter userCourseInput: The slice of user course input related to this group of subjects.
+    /// - Returns: A `GPAComputePart` instance representing the computed GPA and its associated weight.
     func computeGPA(userCourseInput: ArraySlice<UserCourseInput>) -> GPAComputePart {
         return .init(value: baseGPAMatrix[userCourseInput[userCourseInput.startIndex].scoreIndex][userCourseInput[userCourseInput.startIndex + 1].scoreIndex], weight: subjects[0].levels[0].weight)
     }

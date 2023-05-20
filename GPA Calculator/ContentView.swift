@@ -81,9 +81,9 @@ struct SubjectDataInputView: View {
             // The user's selection is stored in the `AppSingleton` instance.
             Picker(selection: .init(get: {
                 appSingleton.userInput[appSingleton.currentPresetIndex][subjectIndex].scoreIndex
-            }, set: { x in
+            }, set: { val in
                 vibrate(.light)
-                appSingleton.userInput[appSingleton.currentPresetIndex][subjectIndex].scoreIndex=x
+                appSingleton.userInput[appSingleton.currentPresetIndex][subjectIndex].scoreIndex = val
                 appSingleton.computeGPA()
             })) {
                 ForEach((0..<subject.scoreAndBaseGPAPairs.count), id: \.self) { scoreIndex in
