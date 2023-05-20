@@ -1,10 +1,3 @@
-//
-//  PresetData.swift
-//  GPA Calculator
-//
-//  Created by Michel Guo on 2022/1/5.
-//
-
 import Foundation
 
 var presets:[Preset] = {
