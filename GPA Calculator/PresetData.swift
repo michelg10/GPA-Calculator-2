@@ -164,7 +164,7 @@ var presets:[Preset] = {
         g11chinese
     ])
     
-    let ibElectives:[SizeDependentString] = [.init("Biology"), .init("Chemistry"), .init("Economics"), .init("ESS", "ESS"), .init("History"), .init("ITCS"), .init("Music"), .init("Physics"), .init("Psych", "Psychology"), .init("VA", "Visual Arts")]
+    let ibElectives: [SizeDependentString] = [.init("Biology"), .init("Chemistry"), .init("Economics"), .init("ESS", "ESS"), .init("History"), .init("ITCS"), .init("Music"), .init("Physics"), .init("Psych", "Psychology"), .init("VA", "Visual Arts")]
     let g11ib = Preset.init(id: "stockshsidgrade11-ib", name: "Grade 11", subtitle: "IB (No EE)", useSmallLevelDisplay: true, subjectComputeGroups: [
         Subject.fastIb(name: "Math"),
         Subject.fastIb(name: "English"),
