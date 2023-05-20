@@ -1,6 +1,6 @@
 import Foundation
 
-var presets:[Preset] = {
+var presets: [Preset] = {
     let g6 = Preset.init(id: "stockshsidgrade6", name: "Grade 6", subjectComputeGroups: [
         Subject.defaultEnglish(weight: 6.5, hasAP: false),
         Subject.defaultOther(name: "Math", weight: 6.5, hasSP: true, hasH: true, hasAL: false, hasAP: false),

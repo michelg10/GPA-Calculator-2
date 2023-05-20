@@ -8,23 +8,39 @@
 
 /* Begin PBXBuildFile section */
 		D014BC0F278ECD6D00A0CEFA /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D014BC0E278ECD6D00A0CEFA /* SegmentedControlView.swift */; };
-		D0236FD6278545FE00A4793B /* PresetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0236FD5278545FE00A4793B /* PresetData.swift */; };
+		D0236FD6278545FE00A4793B /* DefaultPresets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0236FD5278545FE00A4793B /* DefaultPresets.swift */; };
 		D0236FD82785796600A4793B /* CustomizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0236FD72785796600A4793B /* CustomizeView.swift */; };
 		D05CDDAF278FDC5100F019F7 /* CustomizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0236FD72785796600A4793B /* CustomizeView.swift */; };
 		D05CDDB0278FDC5100F019F7 /* AppSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07518CA27816FAF004F95A8 /* AppSingleton.swift */; };
 		D05CDDB1278FDC5100F019F7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F3CDE5277D9B7E00CB6875 /* ContentView.swift */; };
-		D05CDDB2278FDC5100F019F7 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07518CC27817380004F95A8 /* Common.swift */; };
-		D05CDDB3278FDC5100F019F7 /* Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07518CE2781741C004F95A8 /* Presets.swift */; };
-		D05CDDB4278FDC5100F019F7 /* PresetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0236FD5278545FE00A4793B /* PresetData.swift */; };
+		D05CDDB4278FDC5100F019F7 /* DefaultPresets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0236FD5278545FE00A4793B /* DefaultPresets.swift */; };
 		D05CDDB6278FDC5100F019F7 /* GPA_CalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F3CDE3277D9B7E00CB6875 /* GPA_CalculatorApp.swift */; };
 		D05CDDB8278FDE6B00F019F7 /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D014BC0E278ECD6D00A0CEFA /* SegmentedControlView.swift */; };
 		D05CDDBD279066C900F019F7 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05CDDBC279066C900F019F7 /* WelcomeView.swift */; };
 		D05CDDC127906D2F00F019F7 /* PresetSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05CDDC027906D2F00F019F7 /* PresetSetupView.swift */; };
 		D064D4F92A186EF600B63008 /* NameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D4F82A186EF600B63008 /* NameMode.swift */; };
 		D064D4FB2A186F0800B63008 /* SizeDependentString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D4FA2A186F0800B63008 /* SizeDependentString.swift */; };
+		D064D52C2A18DA6A00B63008 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05CDDBC279066C900F019F7 /* WelcomeView.swift */; };
+		D064D52D2A18DAD800B63008 /* NameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D4F82A186EF600B63008 /* NameMode.swift */; };
+		D064D52E2A18DADA00B63008 /* SizeDependentString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D4FA2A186F0800B63008 /* SizeDependentString.swift */; };
+		D064D5302A18DB9600B63008 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D52F2A18DB9600B63008 /* Preset.swift */; };
+		D064D5342A18DBE800B63008 /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D5332A18DBE800B63008 /* HapticFeedback.swift */; };
+		D064D5362A18DC1900B63008 /* isEqual.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D5352A18DC1900B63008 /* isEqual.swift */; };
+		D064D5382A18DC4B00B63008 /* nilButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D5372A18DC4B00B63008 /* nilButtonStyle.swift */; };
+		D064D53A2A18DD6100B63008 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D52F2A18DB9600B63008 /* Preset.swift */; };
+		D064D53C2A18DE3200B63008 /* UserCourseInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D53B2A18DE3200B63008 /* UserCourseInput.swift */; };
+		D064D53E2A18DE3E00B63008 /* GPAComputePart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D53D2A18DE3E00B63008 /* GPAComputePart.swift */; };
+		D064D5402A18DE4A00B63008 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D53F2A18DE4A00B63008 /* Level.swift */; };
+		D064D5422A18DE5200B63008 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D5412A18DE5200B63008 /* Score.swift */; };
+		D064D5442A18DE6200B63008 /* ScoreAndBaseGPAPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D5432A18DE6200B63008 /* ScoreAndBaseGPAPair.swift */; };
+		D064D5462A18DE6D00B63008 /* SubjectGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D5452A18DE6D00B63008 /* SubjectGroup.swift */; };
+		D064D5482A18DE8D00B63008 /* DefaultScoreAndBaseGPAPairs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D5472A18DE8D00B63008 /* DefaultScoreAndBaseGPAPairs.swift */; };
+		D064D54A2A18DEC600B63008 /* DefaultScoreAndBaseGPAPairs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D5472A18DE8D00B63008 /* DefaultScoreAndBaseGPAPairs.swift */; };
+		D064D54C2A18DF0D00B63008 /* Subject+DefaultSubjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D54B2A18DF0D00B63008 /* Subject+DefaultSubjects.swift */; };
+		D064D54E2A18DF2A00B63008 /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D54D2A18DF2A00B63008 /* Subject.swift */; };
+		D064D5502A18DF3E00B63008 /* MaxSubjectGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D54F2A18DF3E00B63008 /* MaxSubjectGroup.swift */; };
+		D064D5522A18DF4B00B63008 /* DoubleSubjectGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D5512A18DF4B00B63008 /* DoubleSubjectGroup.swift */; };
 		D07518CB27816FAF004F95A8 /* AppSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07518CA27816FAF004F95A8 /* AppSingleton.swift */; };
-		D07518CD27817380004F95A8 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07518CC27817380004F95A8 /* Common.swift */; };
-		D07518CF2781741C004F95A8 /* Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07518CE2781741C004F95A8 /* Presets.swift */; };
 		D0F3CDE4277D9B7E00CB6875 /* GPA_CalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F3CDE3277D9B7E00CB6875 /* GPA_CalculatorApp.swift */; };
 		D0F3CDE6277D9B7E00CB6875 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F3CDE5277D9B7E00CB6875 /* ContentView.swift */; };
 		D0F3CDE8277D9B7F00CB6875 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0F3CDE7277D9B7F00CB6875 /* Assets.xcassets */; };
@@ -67,7 +83,7 @@
 
 /* Begin PBXFileReference section */
 		D014BC0E278ECD6D00A0CEFA /* SegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlView.swift; sourceTree = "<group>"; };
-		D0236FD5278545FE00A4793B /* PresetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetData.swift; sourceTree = "<group>"; };
+		D0236FD5278545FE00A4793B /* DefaultPresets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPresets.swift; sourceTree = "<group>"; };
 		D0236FD72785796600A4793B /* CustomizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeView.swift; sourceTree = "<group>"; };
 		D05CDD84278FDC1C00F019F7 /* GPA Calculator Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GPA Calculator Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D05CDD94278FDC1D00F019F7 /* GPA Calculator MacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GPA Calculator MacTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,9 +95,22 @@
 		D05CDDC2279088CC00F019F7 /* GPA-Calculator-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GPA-Calculator-Info.plist"; sourceTree = SOURCE_ROOT; };
 		D064D4F82A186EF600B63008 /* NameMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameMode.swift; sourceTree = "<group>"; };
 		D064D4FA2A186F0800B63008 /* SizeDependentString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeDependentString.swift; sourceTree = "<group>"; };
+		D064D52F2A18DB9600B63008 /* Preset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
+		D064D5332A18DBE800B63008 /* HapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedback.swift; sourceTree = "<group>"; };
+		D064D5352A18DC1900B63008 /* isEqual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = isEqual.swift; sourceTree = "<group>"; };
+		D064D5372A18DC4B00B63008 /* nilButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nilButtonStyle.swift; sourceTree = "<group>"; };
+		D064D53B2A18DE3200B63008 /* UserCourseInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCourseInput.swift; sourceTree = "<group>"; };
+		D064D53D2A18DE3E00B63008 /* GPAComputePart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPAComputePart.swift; sourceTree = "<group>"; };
+		D064D53F2A18DE4A00B63008 /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
+		D064D5412A18DE5200B63008 /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
+		D064D5432A18DE6200B63008 /* ScoreAndBaseGPAPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreAndBaseGPAPair.swift; sourceTree = "<group>"; };
+		D064D5452A18DE6D00B63008 /* SubjectGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectGroup.swift; sourceTree = "<group>"; };
+		D064D5472A18DE8D00B63008 /* DefaultScoreAndBaseGPAPairs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultScoreAndBaseGPAPairs.swift; sourceTree = "<group>"; };
+		D064D54B2A18DF0D00B63008 /* Subject+DefaultSubjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Subject+DefaultSubjects.swift"; sourceTree = "<group>"; };
+		D064D54D2A18DF2A00B63008 /* Subject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subject.swift; sourceTree = "<group>"; };
+		D064D54F2A18DF3E00B63008 /* MaxSubjectGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxSubjectGroup.swift; sourceTree = "<group>"; };
+		D064D5512A18DF4B00B63008 /* DoubleSubjectGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleSubjectGroup.swift; sourceTree = "<group>"; };
 		D07518CA27816FAF004F95A8 /* AppSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSingleton.swift; sourceTree = "<group>"; };
-		D07518CC27817380004F95A8 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
-		D07518CE2781741C004F95A8 /* Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presets.swift; sourceTree = "<group>"; };
 		D0F3CDE0277D9B7E00CB6875 /* GPA Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GPA Calculator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0F3CDE3277D9B7E00CB6875 /* GPA_CalculatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPA_CalculatorApp.swift; sourceTree = "<group>"; };
 		D0F3CDE5277D9B7E00CB6875 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -143,10 +172,69 @@
 		D064D4F72A186EE600B63008 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				D064D4F82A186EF600B63008 /* NameMode.swift */,
 				D064D4FA2A186F0800B63008 /* SizeDependentString.swift */,
+				D064D5332A18DBE800B63008 /* HapticFeedback.swift */,
+				D064D5352A18DC1900B63008 /* isEqual.swift */,
+				D064D5372A18DC4B00B63008 /* nilButtonStyle.swift */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		D064D5312A18DBAB00B63008 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D0F3CDE3277D9B7E00CB6875 /* GPA_CalculatorApp.swift */,
+				D0F3CDE5277D9B7E00CB6875 /* ContentView.swift */,
+				D014BC0E278ECD6D00A0CEFA /* SegmentedControlView.swift */,
+				D0236FD72785796600A4793B /* CustomizeView.swift */,
+				D05CDDBC279066C900F019F7 /* WelcomeView.swift */,
+				D05CDDC027906D2F00F019F7 /* PresetSetupView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D064D5322A18DBBB00B63008 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				D07518CA27816FAF004F95A8 /* AppSingleton.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		D064D5392A18DD5A00B63008 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D064D52F2A18DB9600B63008 /* Preset.swift */,
+				D064D4F82A186EF600B63008 /* NameMode.swift */,
+				D064D53B2A18DE3200B63008 /* UserCourseInput.swift */,
+				D064D53D2A18DE3E00B63008 /* GPAComputePart.swift */,
+				D064D5532A18E0A300B63008 /* Subjects */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D064D5492A18DEBE00B63008 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D0236FD5278545FE00A4793B /* DefaultPresets.swift */,
+				D064D5472A18DE8D00B63008 /* DefaultScoreAndBaseGPAPairs.swift */,
+				D064D54B2A18DF0D00B63008 /* Subject+DefaultSubjects.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		D064D5532A18E0A300B63008 /* Subjects */ = {
+			isa = PBXGroup;
+			children = (
+				D064D5452A18DE6D00B63008 /* SubjectGroup.swift */,
+				D064D54D2A18DF2A00B63008 /* Subject.swift */,
+				D064D54F2A18DF3E00B63008 /* MaxSubjectGroup.swift */,
+				D064D5512A18DF4B00B63008 /* DoubleSubjectGroup.swift */,
+				D064D5412A18DE5200B63008 /* Score.swift */,
+				D064D5432A18DE6200B63008 /* ScoreAndBaseGPAPair.swift */,
+				D064D53F2A18DE4A00B63008 /* Level.swift */,
+			);
+			path = Subjects;
 			sourceTree = "<group>";
 		};
 		D0F3CDD7277D9B7E00CB6875 = {
@@ -177,16 +265,10 @@
 			children = (
 				D05CDDC2279088CC00F019F7 /* GPA-Calculator-Info.plist */,
 				D05CDDB9278FDF8C00F019F7 /* GPA Calculator.entitlements */,
-				D0F3CDE3277D9B7E00CB6875 /* GPA_CalculatorApp.swift */,
-				D0F3CDE5277D9B7E00CB6875 /* ContentView.swift */,
-				D014BC0E278ECD6D00A0CEFA /* SegmentedControlView.swift */,
-				D0236FD72785796600A4793B /* CustomizeView.swift */,
-				D07518CA27816FAF004F95A8 /* AppSingleton.swift */,
-				D05CDDBC279066C900F019F7 /* WelcomeView.swift */,
-				D05CDDC027906D2F00F019F7 /* PresetSetupView.swift */,
-				D07518CE2781741C004F95A8 /* Presets.swift */,
-				D0236FD5278545FE00A4793B /* PresetData.swift */,
-				D07518CC27817380004F95A8 /* Common.swift */,
+				D064D5312A18DBAB00B63008 /* View */,
+				D064D5322A18DBBB00B63008 /* ViewModel */,
+				D064D5392A18DD5A00B63008 /* Model */,
+				D064D5492A18DEBE00B63008 /* Data */,
 				D064D4F72A186EE600B63008 /* Util */,
 				D0F3CDE7277D9B7F00CB6875 /* Assets.xcassets */,
 				D05CDDB7278FDCAB00F019F7 /* GPA_Calculator_Mac.entitlements */,
@@ -438,14 +520,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D05CDDB2278FDC5100F019F7 /* Common.swift in Sources */,
 				D05CDDAF278FDC5100F019F7 /* CustomizeView.swift in Sources */,
 				D05CDDB0278FDC5100F019F7 /* AppSingleton.swift in Sources */,
+				D064D52D2A18DAD800B63008 /* NameMode.swift in Sources */,
 				D05CDDB6278FDC5100F019F7 /* GPA_CalculatorApp.swift in Sources */,
-				D05CDDB3278FDC5100F019F7 /* Presets.swift in Sources */,
+				D064D52C2A18DA6A00B63008 /* WelcomeView.swift in Sources */,
+				D064D54A2A18DEC600B63008 /* DefaultScoreAndBaseGPAPairs.swift in Sources */,
 				D05CDDB8278FDE6B00F019F7 /* SegmentedControlView.swift in Sources */,
-				D05CDDB4278FDC5100F019F7 /* PresetData.swift in Sources */,
+				D05CDDB4278FDC5100F019F7 /* DefaultPresets.swift in Sources */,
+				D064D53A2A18DD6100B63008 /* Preset.swift in Sources */,
 				D05CDDB1278FDC5100F019F7 /* ContentView.swift in Sources */,
+				D064D52E2A18DADA00B63008 /* SizeDependentString.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -467,18 +552,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D07518CD27817380004F95A8 /* Common.swift in Sources */,
+				D064D5482A18DE8D00B63008 /* DefaultScoreAndBaseGPAPairs.swift in Sources */,
+				D064D53C2A18DE3200B63008 /* UserCourseInput.swift in Sources */,
+				D064D5342A18DBE800B63008 /* HapticFeedback.swift in Sources */,
 				D064D4FB2A186F0800B63008 /* SizeDependentString.swift in Sources */,
 				D0F3CDE6277D9B7E00CB6875 /* ContentView.swift in Sources */,
 				D07518CB27816FAF004F95A8 /* AppSingleton.swift in Sources */,
-				D07518CF2781741C004F95A8 /* Presets.swift in Sources */,
 				D05CDDBD279066C900F019F7 /* WelcomeView.swift in Sources */,
-				D0236FD6278545FE00A4793B /* PresetData.swift in Sources */,
+				D0236FD6278545FE00A4793B /* DefaultPresets.swift in Sources */,
 				D014BC0F278ECD6D00A0CEFA /* SegmentedControlView.swift in Sources */,
+				D064D54C2A18DF0D00B63008 /* Subject+DefaultSubjects.swift in Sources */,
+				D064D5502A18DF3E00B63008 /* MaxSubjectGroup.swift in Sources */,
 				D064D4F92A186EF600B63008 /* NameMode.swift in Sources */,
+				D064D5462A18DE6D00B63008 /* SubjectGroup.swift in Sources */,
+				D064D5442A18DE6200B63008 /* ScoreAndBaseGPAPair.swift in Sources */,
 				D0236FD82785796600A4793B /* CustomizeView.swift in Sources */,
+				D064D5302A18DB9600B63008 /* Preset.swift in Sources */,
+				D064D54E2A18DF2A00B63008 /* Subject.swift in Sources */,
+				D064D5402A18DE4A00B63008 /* Level.swift in Sources */,
+				D064D5422A18DE5200B63008 /* Score.swift in Sources */,
+				D064D5362A18DC1900B63008 /* isEqual.swift in Sources */,
 				D0F3CDE4277D9B7E00CB6875 /* GPA_CalculatorApp.swift in Sources */,
 				D05CDDC127906D2F00F019F7 /* PresetSetupView.swift in Sources */,
+				D064D5382A18DC4B00B63008 /* nilButtonStyle.swift in Sources */,
+				D064D53E2A18DE3E00B63008 /* GPAComputePart.swift in Sources */,
+				D064D5522A18DF4B00B63008 /* DoubleSubjectGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -784,7 +882,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "GPA Calculator/GPA Calculator.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_ASSET_PATHS = "\"GPA Calculator/Preview Content\"";
 				DEVELOPMENT_TEAM = 9K2XM38XLK;
 				ENABLE_PREVIEWS = YES;
@@ -801,7 +899,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michelguo.gpacalc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
@@ -818,7 +916,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "GPA Calculator/GPA Calculator.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_ASSET_PATHS = "\"GPA Calculator/Preview Content\"";
 				DEVELOPMENT_TEAM = 9K2XM38XLK;
 				ENABLE_PREVIEWS = YES;
@@ -835,7 +933,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.michelguo.gpacalc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
