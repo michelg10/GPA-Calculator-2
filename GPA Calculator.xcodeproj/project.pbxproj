@@ -20,6 +20,8 @@
 		D05CDDB8278FDE6B00F019F7 /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D014BC0E278ECD6D00A0CEFA /* SegmentedControlView.swift */; };
 		D05CDDBD279066C900F019F7 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05CDDBC279066C900F019F7 /* WelcomeView.swift */; };
 		D05CDDC127906D2F00F019F7 /* PresetSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05CDDC027906D2F00F019F7 /* PresetSetupView.swift */; };
+		D064D4F92A186EF600B63008 /* NameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D4F82A186EF600B63008 /* NameMode.swift */; };
+		D064D4FB2A186F0800B63008 /* SizeDependentString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D064D4FA2A186F0800B63008 /* SizeDependentString.swift */; };
 		D07518CB27816FAF004F95A8 /* AppSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07518CA27816FAF004F95A8 /* AppSingleton.swift */; };
 		D07518CD27817380004F95A8 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07518CC27817380004F95A8 /* Common.swift */; };
 		D07518CF2781741C004F95A8 /* Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07518CE2781741C004F95A8 /* Presets.swift */; };
@@ -75,6 +77,8 @@
 		D05CDDBC279066C900F019F7 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		D05CDDC027906D2F00F019F7 /* PresetSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetSetupView.swift; sourceTree = "<group>"; };
 		D05CDDC2279088CC00F019F7 /* GPA-Calculator-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GPA-Calculator-Info.plist"; sourceTree = SOURCE_ROOT; };
+		D064D4F82A186EF600B63008 /* NameMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameMode.swift; sourceTree = "<group>"; };
+		D064D4FA2A186F0800B63008 /* SizeDependentString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeDependentString.swift; sourceTree = "<group>"; };
 		D07518CA27816FAF004F95A8 /* AppSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSingleton.swift; sourceTree = "<group>"; };
 		D07518CC27817380004F95A8 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		D07518CE2781741C004F95A8 /* Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presets.swift; sourceTree = "<group>"; };
@@ -136,6 +140,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D064D4F72A186EE600B63008 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				D064D4F82A186EF600B63008 /* NameMode.swift */,
+				D064D4FA2A186F0800B63008 /* SizeDependentString.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		D0F3CDD7277D9B7E00CB6875 = {
 			isa = PBXGroup;
 			children = (
@@ -174,6 +187,7 @@
 				D07518CE2781741C004F95A8 /* Presets.swift */,
 				D0236FD5278545FE00A4793B /* PresetData.swift */,
 				D07518CC27817380004F95A8 /* Common.swift */,
+				D064D4F72A186EE600B63008 /* Util */,
 				D0F3CDE7277D9B7F00CB6875 /* Assets.xcassets */,
 				D05CDDB7278FDCAB00F019F7 /* GPA_Calculator_Mac.entitlements */,
 				D0F3CDE9277D9B7F00CB6875 /* Preview Content */,
@@ -454,12 +468,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				D07518CD27817380004F95A8 /* Common.swift in Sources */,
+				D064D4FB2A186F0800B63008 /* SizeDependentString.swift in Sources */,
 				D0F3CDE6277D9B7E00CB6875 /* ContentView.swift in Sources */,
 				D07518CB27816FAF004F95A8 /* AppSingleton.swift in Sources */,
 				D07518CF2781741C004F95A8 /* Presets.swift in Sources */,
 				D05CDDBD279066C900F019F7 /* WelcomeView.swift in Sources */,
 				D0236FD6278545FE00A4793B /* PresetData.swift in Sources */,
 				D014BC0F278ECD6D00A0CEFA /* SegmentedControlView.swift in Sources */,
+				D064D4F92A186EF600B63008 /* NameMode.swift in Sources */,
 				D0236FD82785796600A4793B /* CustomizeView.swift in Sources */,
 				D0F3CDE4277D9B7E00CB6875 /* GPA_CalculatorApp.swift in Sources */,
 				D05CDDC127906D2F00F019F7 /* PresetSetupView.swift in Sources */,

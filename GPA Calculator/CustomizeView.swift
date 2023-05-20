@@ -84,7 +84,7 @@ struct CustomizeView: View {
                                 appSingleton.currentPresetIndex = index
                                 appSingleton.initializePresetOptionsForCurrentPresetIndex()
                             } label: {
-                                PresetItemView(selected: appSingleton.currentPresetIndex == index, name: presets[index].name, subtitle: presets[index].computedSubtitle)
+                                PresetItemView(selected: appSingleton.currentPresetIndex == index, name: presets[index].name, subtitle: presets[index].subtitle)
                             }.buttonStyle(nilButtonStyle())
                         }
                     }

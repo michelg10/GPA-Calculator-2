@@ -29,7 +29,7 @@ class AppSingleton:ObservableObject {
     @Published var currentGPA = "0.000"
     
     var currentPresetIndex: Int = -1
-    var currentPreset: Course {
+    var currentPreset: Preset {
         presets[currentPresetIndex]
     }
     
@@ -67,7 +67,7 @@ class AppSingleton:ObservableObject {
         defaults.setValue(nameMode == .letter ? "Letter" : "Percentage", forKey: "NameMode")
         for i in 0..<presets.count {
             let presetId = presets[i].id
-            let subjects = presets[i].getSubjects()
+            let subjects = presets[i].subjects
             for j in 0..<subjects.count {
                 defaults.setValue(alternativeNamePreferenceIndex[i][j], forKey: "\(presetId)-\(j)-NameChoice")
                 defaults.setValue(userInput[i][j].levelIndex, forKey: "\(presetId)-\(j)-LevelIndex")
@@ -118,7 +118,7 @@ class AppSingleton:ObservableObject {
     func readUserNameChoiceAndInputFromSave() {
         for i in 0..<presets.count {
             var loadFailure = false
-            let presetSubjects = presets[i].getSubjects()
+            let presetSubjects = presets[i].subjects
             let presetId = presets[i].id
             for j in 0..<presetSubjects.count {
                 let nameChoice = defaults.object(forKey: "\(presetId)-\(j)-NameChoice") as? Int
@@ -184,7 +184,7 @@ class AppSingleton:ObservableObject {
         var maxRequiredSize = 0 // maximum required size to hold name choices for any preset.
         // The user input array for every preset will be initialized to this size to prevent out-of-bounds errors from happening as SwiftUI view updates might be out of sync with model updates
         for i in 0..<alternativeNamePreferenceIndex.count {
-            let presetSubjectCount = presets[i].subjectsCount
+            let presetSubjectCount = presets[i].subjects.count
             maxRequiredSize = max(maxRequiredSize, presetSubjectCount)
         }
         
@@ -223,21 +223,7 @@ class AppSingleton:ObservableObject {
             return
         }
         
-        var gpa = 0.0
-        var gpaTotalWeight = 0.0
-        var currentUserCourseInputIndex = 0
-        
-        // TODO: Fix this
-        for i in 0..<currentPreset.subjectComputeGroups.count {
-            let computeGroupSubjectCount = currentPreset.subjectComputeGroups[i].getSubjects().count
-            let computeResult = currentPreset.subjectComputeGroups[i].computeGPA(userCourseInput: userInput[currentPresetIndex][currentUserCourseInputIndex..<currentUserCourseInputIndex+computeGroupSubjectCount])
-            gpa += computeResult.value * computeResult.weight;
-            gpaTotalWeight += computeResult.weight;
-            currentUserCourseInputIndex += computeGroupSubjectCount
-        }
-        gpa /= gpaTotalWeight
-        
-        currentGPA = formatDoubleToDecimalPlaces(gpa, decimalPlaces: 3)
+        currentGPA = formatDoubleToDecimalPlaces(currentPreset.computeGPA(userCourseInput: userInput[currentPresetIndex]), decimalPlaces: 3)
     }
     
     func resetUserCourseInput() {
@@ -250,7 +236,7 @@ class AppSingleton:ObservableObject {
     
     func initializePresetOptionsForCurrentPresetIndex() {
         presetOptionsCount = 0
-        let subjects = presets[currentPresetIndex].getSubjects()
+        let subjects = presets[currentPresetIndex].subjects
         
         for i in 0..<subjects.count {
             if subjects[i].alternateNames != nil {

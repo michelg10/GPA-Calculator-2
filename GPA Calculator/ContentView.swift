@@ -149,7 +149,7 @@ struct ContentView: View {
                             }.frame(height: 70)
                             
                             // Create a `SubjectDataInputView` for each subject in the current preset.
-                            let subjects = appSingleton.currentPreset.getSubjects()
+                            let subjects = appSingleton.currentPreset.subjects
                             ForEach((0..<subjects.count), id: \.self) { subjectIndex in
                                 Rectangle()
                                     .frame(height: 1)
