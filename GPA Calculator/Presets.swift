@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum NameMode:String, CaseIterable, Identifiable {    
+enum NameMode: String, CaseIterable, Identifiable {    
     case percentage
     case letter
     
@@ -50,14 +50,16 @@ struct Course {
     var name: String
     var subtitle: String?
     var useSmallLevelDisplay: Bool = false
-    var subjectComputeGroup: [SubjectComputeGroup]
+    var subjectComputeGroups: [SubjectComputeGroup]
+    
     nonmutating func getSubjects() -> [Subject] {
         var rturn: [Subject] = []
-        for i in subjectComputeGroup {
+        for i in subjectComputeGroups {
             rturn.append(contentsOf: i.getSubjects())
         }
         return rturn
     }
+    
     lazy var subjectsCount: Int = {
         return getSubjects().count
     }()

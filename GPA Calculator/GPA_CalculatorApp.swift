@@ -4,7 +4,7 @@ import SwiftUI
 struct GPA_CalculatorApp: App {
     var body: some Scene {
         WindowGroup {
-            if AppSingleton.defaultsHasPreset() {
+            if AppSingleton.currentPresetInSaveIsValid() {
                 ContentView(appSingleton: .init(loadSave: true))
                     .navigationTitle("GPA Calculator")
             } else {

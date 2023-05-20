@@ -1,10 +1,3 @@
-//
-//  PresetSetupView.swift
-//  GPA Calculator
-//
-//  Created by Michel Guo on 2022/1/13.
-//
-
 import SwiftUI
 
 struct PresetSetupView: View {
@@ -15,7 +8,9 @@ struct PresetSetupView: View {
         NavigationView {
             ZStack {
                 NavigationLink(
-                    destination: ContentView(appSingleton: appSingleton),tag: 1,selection: $navAction,
+                    destination: ContentView(appSingleton: appSingleton),
+                    tag: 1,
+                    selection: $navAction,
                     label: {
                         EmptyView()
                     })
@@ -46,7 +41,7 @@ struct PresetSetupView: View {
                                     defaults.synchronize()
                                     appSingleton.reloadFromSave()
                                 } label: {
-                                    PresetOptionView(selected: false, name: presets[index].name, subtitle: presets[index].getComputedSubtitle())
+                                    PresetItemView(selected: false, name: presets[index].name, subtitle: presets[index].getComputedSubtitle())
                                 }.buttonStyle(nilButtonStyle())
                             }
                         }.padding(.horizontal, 16)

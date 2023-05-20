@@ -38,13 +38,13 @@ struct SubjectDataInputView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     // A singleton instance managing application-wide data.
-    var appSingleton: AppSingleton
+    @ObservedObject var appSingleton: AppSingleton
     
     // `name` is a size-dependent string, providing different text based on the device's horizontal size class.
-    var name: SizeDependentString
+    let name: SizeDependentString
     
     // The specific `Subject` instance this view is associated with.
-    var subject: Subject
+    let subject: Subject
     
     // The index of the subject in the global subjects list.
     var subjectIndex: Int
@@ -69,10 +69,10 @@ struct SubjectDataInputView: View {
                 // A segmented control for selecting the level of the subject.
                 // The user's selection is stored in the `AppSingleton` instance.
                 SegmentedControlView(items: subject.getLevelNames(), selectedIndex: .init(get: {
-                    appSingleton.userInput[appSingleton.appliedPresetIndex][subjectIndex].levelIndex
+                    appSingleton.userInput[appSingleton.currentPresetIndex][subjectIndex].levelIndex
                 }, set: { val in
                     vibrate(.light)
-                    appSingleton.userInput[appSingleton.appliedPresetIndex][subjectIndex].levelIndex = val
+                    appSingleton.userInput[appSingleton.currentPresetIndex][subjectIndex].levelIndex = val
                     appSingleton.computeGPA()
                 })).frame(maxWidth: (appSingleton.currentPreset.useSmallLevelDisplay ? 170 : (horizontalSizeClass == .regular ? 470 : 265)))
             }
@@ -80,10 +80,10 @@ struct SubjectDataInputView: View {
             // A picker for the subject score.
             // The user's selection is stored in the `AppSingleton` instance.
             Picker(selection: .init(get: {
-                appSingleton.userInput[appSingleton.appliedPresetIndex][subjectIndex].scoreIndex
+                appSingleton.userInput[appSingleton.currentPresetIndex][subjectIndex].scoreIndex
             }, set: { x in
                 vibrate(.light)
-                appSingleton.userInput[appSingleton.appliedPresetIndex][subjectIndex].scoreIndex=x
+                appSingleton.userInput[appSingleton.currentPresetIndex][subjectIndex].scoreIndex=x
                 appSingleton.computeGPA()
             })) {
                 ForEach((0..<subject.scoreAndBaseGPAPairs.count), id: \.self) { scoreIndex in
@@ -123,7 +123,7 @@ struct ContentView: View {
                         VStack(spacing: 0) {
                             // Invisible navigation link triggered by the 'Customize' button.
                             NavigationLink(
-                                destination: CustomizeView(nameMode: $appSingleton.nameMode, appSingleton: appSingleton),
+                                destination: CustomizeView(appSingleton: appSingleton),
                                 tag: 1,
                                 selection: $navAction,
                                 label: {
@@ -157,8 +157,8 @@ struct ContentView: View {
                                     .padding(.leading, subjectIndex == 0 ? 0 : 25)
                                 
                                 let subject = subjects[subjectIndex]
-                                let userNameChoiceIndex = appSingleton.userNameChoiceIndex[appSingleton.appliedPresetIndex][subjectIndex]
-                                let name = userNameChoiceIndex == -1 ? subject.name : subject.alternateNames![userNameChoiceIndex]
+                                let currentSubjectAlternativeNamePreferenceIndex = appSingleton.alternativeNamePreferenceIndex[appSingleton.currentPresetIndex][subjectIndex]
+                                let name = currentSubjectAlternativeNamePreferenceIndex == -1 ? subject.name : subject.alternateNames![currentSubjectAlternativeNamePreferenceIndex]
                                 
                                 SubjectDataInputView(appSingleton: appSingleton, name: name, subject: subject, subjectIndex: subjectIndex, subjectTitleWidth: subjectTitleWidth)
                                     .onPreferenceChange(MaxWidthPreferenceKey.self) { value in

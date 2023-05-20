@@ -15,7 +15,7 @@ struct nilButtonStyle: ButtonStyle {
 }
 
 func isEqual(_ a: Double, _ b: Double) -> Bool {
-    return abs(a-b)<0.000001
+    return abs(a - b) < 0.000001
 }
 
 func vibrate(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {

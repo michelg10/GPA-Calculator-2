@@ -8,7 +8,7 @@
 import Foundation
 
 var presets:[Course] = {
-    let g6 = Course.init(id: "stockshsidgrade6", name: "Grade 6", subjectComputeGroup: [
+    let g6 = Course.init(id: "stockshsidgrade6", name: "Grade 6", subjectComputeGroups: [
         Subject.fastEnglish(weight: 6.5, hasAP: false),
         Subject.fastOther(name: "Math", weight: 6.5, hasSP: true, hasH: true, hasAL: false, hasAP: false),
         Subject.fastChinese(weight: 5, hasHP: false, middleName: "S", isMiddleSchoolChinese: true),
@@ -16,7 +16,7 @@ var presets:[Course] = {
         Subject.fastOther(name: "History", weight: 2.5, hasSP: true, hasH: false, hasAL: false, hasAP: false)
     ])
     
-    let g7 = Course.init(id: "stockshsidgrade7", name: "Grade 7", subjectComputeGroup: [
+    let g7 = Course.init(id: "stockshsidgrade7", name: "Grade 7", subjectComputeGroups: [
         Subject.fastEnglish(weight: 6, hasAP: false),
         Subject.fastOther(name: "Math", weight: 6, hasSP: true, hasH: true, hasAL: false, hasAP: false),
         Subject.fastOther(name: "History", weight: 5, hasSP: true, hasH: true, hasAL: false, hasAP: false),
@@ -24,7 +24,7 @@ var presets:[Course] = {
         Subject.fastOther(name: "Science", weight: 3, hasSP: true, hasH: false, hasAL: false, hasAP: false),
     ])
     
-    let g8 = Course.init(id: "stockshsidgrade8", name: "Grade 8", subjectComputeGroup: [
+    let g8 = Course.init(id: "stockshsidgrade8", name: "Grade 8", subjectComputeGroups: [
         Subject.fastEnglish(weight: 6, hasAP: false),
         Subject.fastOther(name: "Math", weight: 6, hasSP: true, hasH: true, hasAL: false, hasAP: false),
         Subject.fastOther(name: "Geography", weight: 5, hasSP: true, hasH: true, hasAL: false, hasAP: false),
@@ -33,7 +33,7 @@ var presets:[Course] = {
         Subject.fastOther(name: "Physics", weight: 2.5, hasSP: false, hasH: true, hasAL: false, hasAP: false)
     ])
     
-    let g9 = Course.init(id: "stockshsidgrade9", name: "Grade 9", subjectComputeGroup: [
+    let g9 = Course.init(id: "stockshsidgrade9", name: "Grade 9", subjectComputeGroups: [
         Subject.fastEnglish(weight: 6.5, hasAP: false),
         Subject.fastOther(name: "Math", weight: 6, hasSP: true, hasH: true, hasAL: false, hasAP: false),
         Subject.fastOther(name: "History", weight: 4, hasSP: true, hasH: true, hasAL: false, hasAP: false),
@@ -44,7 +44,7 @@ var presets:[Course] = {
     ])
     
     let g10ElectivesChoice:[SizeDependentString] = [.init("Biology"), .init("Chi Lit", "Chinese Literature"), .init("Economics"), .init("Geography"), .init("ITCS"), .init("Music"), .init("VA", "Visual Arts")]
-    let g10 = Course.init(id: "stockshsidgrade10", name: "Grade 10", subjectComputeGroup: [
+    let g10 = Course.init(id: "stockshsidgrade10", name: "Grade 10", subjectComputeGroups: [
         Subject.fastOther(name: "Math", weight: 5.5, hasSP: true, hasH: true, hasAL: false, hasAP: false),
         Subject.fastEnglish(weight: 5.5, hasAP: true),
         Subject.fastOther(name: "History", weight: 4, hasSP: true, hasH: true, hasAL: false, hasAP: true, apCustomWeight: 5),
@@ -104,7 +104,7 @@ var presets:[Course] = {
     let g11m4=Subject.fastOther(name: "Module 4", weight: 3, alternateNames: module4Options, hasSP: true, hasH: true, hasAL: false, hasAP: false)
     let g11m5=Subject.fastOther(name: "Module 5", weight: 3, alternateNames: module5Options, hasSP: true, hasH: true, hasAL: true, hasAP: true, alCustomWeight: 6.0, apCustomWeight: 4.5)
     
-    let g11_2m2_1m3 = Course.init(id: "stockshsidgrade11-2m2-1m3", name: "Grade 11", subtitle: "2x M2s, 1x M3", subjectComputeGroup: [
+    let g11_2m2_1m3 = Course.init(id: "stockshsidgrade11-2m2-1m3", name: "Grade 11", subtitle: "2x M2s, 1x M3", subjectComputeGroups: [
         g11math,
         g11english,
         g11m2,
@@ -113,7 +113,7 @@ var presets:[Course] = {
         g11chinese
     ])
     
-    let g11_1m2_1m3_1m45 = Course.init(id: "stockshsidgrade11-1m2-1m3-1m45", name: "Grade 11", subtitle: "1x M2, M3, M4/5", subjectComputeGroup: [
+    let g11_1m2_1m3_1m45 = Course.init(id: "stockshsidgrade11-1m2-1m3-1m45", name: "Grade 11", subtitle: "1x M2, M3, M4/5", subjectComputeGroups: [
         g11math,
         g11english,
         g11m2,
@@ -122,7 +122,7 @@ var presets:[Course] = {
         g11chinese
     ])
     
-    let g11_1m2_1m3_1m4_1m5 = Course.init(id: "stockshsidgrade11-1m2-1m3-1m4-1m5", name: "Grade 11", subtitle: "1x M2, M3, M4, M5", subjectComputeGroup: [
+    let g11_1m2_1m3_1m4_1m5 = Course.init(id: "stockshsidgrade11-1m2-1m3-1m4-1m5", name: "Grade 11", subtitle: "1x M2, M3, M4, M5", subjectComputeGroups: [
         g11math,
         g11english,
         g11m2,
@@ -134,7 +134,7 @@ var presets:[Course] = {
         g11chinese
     ])
     
-    let g12_2m2_1m3 = Course.init(id: "stockshsidgrade12-2m2-1m3", name: "Grade 12", subtitle: "2x M2s, 1x M3", subjectComputeGroup: [
+    let g12_2m2_1m3 = Course.init(id: "stockshsidgrade12-2m2-1m3", name: "Grade 12", subtitle: "2x M2s, 1x M3", subjectComputeGroups: [
         g11math,
         g11english,
         g11m2,
@@ -143,7 +143,7 @@ var presets:[Course] = {
         g11chinese
     ])
     
-    let g12_1m2_1m3_1m45 = Course.init(id: "stockshsidgrade12-1m2-1m3-1m45", name: "Grade 12", subtitle: "1x M2, M3, M4/5", subjectComputeGroup: [
+    let g12_1m2_1m3_1m45 = Course.init(id: "stockshsidgrade12-1m2-1m3-1m45", name: "Grade 12", subtitle: "1x M2, M3, M4/5", subjectComputeGroups: [
         g11math,
         g11english,
         g11m2,
@@ -152,7 +152,7 @@ var presets:[Course] = {
         g11chinese
     ])
     
-    let g12_1m2_1m3_1m4_1m5 = Course.init(id: "stockshsidgrade12-1m2-1m3-1m4-1m5", name: "Grade 12", subtitle: "1x M2, M3, M4, M5", subjectComputeGroup: [
+    let g12_1m2_1m3_1m4_1m5 = Course.init(id: "stockshsidgrade12-1m2-1m3-1m4-1m5", name: "Grade 12", subtitle: "1x M2, M3, M4, M5", subjectComputeGroups: [
         g11math,
         g11english,
         g11m2,
@@ -165,7 +165,7 @@ var presets:[Course] = {
     ])
     
     let ibElectives:[SizeDependentString] = [.init("Biology"), .init("Chemistry"), .init("Economics"), .init("ESS", "ESS"), .init("History"), .init("ITCS"), .init("Music"), .init("Physics"), .init("Psych", "Psychology"), .init("VA", "Visual Arts")]
-    let g11ib = Course.init(id: "stockshsidgrade11-ib", name: "Grade 11", subtitle: "IB (No EE)", useSmallLevelDisplay: true, subjectComputeGroup: [
+    let g11ib = Course.init(id: "stockshsidgrade11-ib", name: "Grade 11", subtitle: "IB (No EE)", useSmallLevelDisplay: true, subjectComputeGroups: [
         Subject.fastIb(name: "Math"),
         Subject.fastIb(name: "English"),
         Subject.fastIb(name: "Chinese"),
@@ -174,7 +174,7 @@ var presets:[Course] = {
         Subject.fastIb(name: "Elective 3", alternateNames: ibElectives),
         Subject.fastIbOther(name: "ToK")
     ])
-    let g11ibEe = Course.init(id: "stockshsidgrade11-ibee", name: "Grade 11", subtitle: "IB (With EE)", useSmallLevelDisplay: true, subjectComputeGroup: [
+    let g11ibEe = Course.init(id: "stockshsidgrade11-ibee", name: "Grade 11", subtitle: "IB (With EE)", useSmallLevelDisplay: true, subjectComputeGroups: [
         Subject.fastIb(name: "Math"),
         Subject.fastIb(name: "English"),
         Subject.fastIb(name: "Chinese"),
@@ -193,7 +193,7 @@ var presets:[Course] = {
         ])
     ])
     
-    let g12ibEe = Course.init(id: "stockshsidgrade12-ibee", name: "Grade 12", subtitle: "IB", useSmallLevelDisplay: true, subjectComputeGroup: [
+    let g12ibEe = Course.init(id: "stockshsidgrade12-ibee", name: "Grade 12", subtitle: "IB", useSmallLevelDisplay: true, subjectComputeGroups: [
         Subject.fastIb(name: "Math"),
         Subject.fastIb(name: "English"),
         Subject.fastIb(name: "Chinese"),
