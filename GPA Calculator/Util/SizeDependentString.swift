@@ -3,8 +3,8 @@ import SwiftUI
 /// `SizeDependentString` is a struct that holds two versions of a string, `compact` and `regular`,
 /// and can return the appropriate one based on the given horizontal user interface size class.
 struct SizeDependentString {
-    var compact: String  // Represents the compact version of the string.
-    var regular: String  // Represents the regular version of the string.
+    let compact: String  // Represents the compact version of the string.
+    let regular: String  // Represents the regular version of the string.
     
     /// Returns the string appropriate for the given horizontal user interface size class.
     ///
